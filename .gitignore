@@ -1,0 +1,40 @@
+# Node modules
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Vue UI
+/.vscode/
+.idea/
+
+# Production build
+/dist/
+/build/
+
+# Local environment files
+.env.local
+.env.*.local
+
+# Editor directories and files
+.vscode/*
+.idea/*
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# Optional NPM cache directory
+.npm/
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Nuxt.js specific
+.nuxt/
+output/
