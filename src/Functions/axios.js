@@ -5,7 +5,8 @@ import router from '../router';
 
 
 const axiosFunction = axios.create({
-  baseURL: 'http://localhost:7298/api/'
+  baseURL: 'http://www.satizen.somee.com/api/'
+  // baseURL: 'http://localhost:7298/api/'
 })
 
 // Este interceptor se ejecuta antes de que una solicitud salga del cliente. 
@@ -45,7 +46,7 @@ axiosFunction.interceptors.response.use(
         localStorage.setItem('token', newToken); //Si la solicitud es exitosa se almacena el nuevo token en localStorage
 
         axiosFunction.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-        originalRequest.headers['Authorization'] = `Bearer ${newToken}`; // Se actualiza los headers de las colicitudes con el nuevo token
+        originalRequest.headers['Authorization'] = `Bearer ${newToken}`; // Se actualiza los headers de las solicitudes con el nuevo token
         return axiosFunction(originalRequest);// La solicitud original se reenvía 
 
       } catch (err) {
@@ -57,8 +58,5 @@ axiosFunction.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-
-
 
 export default axiosFunction;

@@ -1,5 +1,13 @@
 <template>
     <div class="container">
+        <div class="spinner-container">
+            <spinner-component
+                :isLoading="IsLoading"
+                :can-cancel="false"
+                :is-full-page="false"
+                @update:isLoading="IsLoading = $event"
+            />
+        </div>
         <form>
             <div class="">
                 <label for="" class="form-label">Usuario</label>
@@ -20,47 +28,45 @@
 import axiosFunction from '@/Functions/axios';
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+import Spinner from '@/components/Spinner.vue';
+import { decodeJwt } from '@/Functions/decodeJwt';
+
 
 export default {
     name: 'LoginView',
     data() {
         return {
-            // listarUsuarios: [],
             usuario: {
                 nombreUsuario: '',
                 password: ''
-            }
+            },
+            IsLoading: false
         }
     },
-    // setup() {
-    //     //Toast
-    //     toast("Primera tostada", {
-    //         autoClose: 2000,
-    //         position: toast.POSITION.BOTTOM_RIGHT,
-    //     });
-    // },
+    components: {
+        "spinner-component": Spinner
+    },
     methods: {
         login() {
-            // axiosFunction.get("Usuarios/ListarUsuarios")
-            //     .then(resultado => {
-            //         this.listarUsuarios = resultado.data.resultado;
-            //         console.log(this.listarUsuarios);
-            //     })
-            //     .catch(error => {
-            //         console.log(error)
-            //     });
-
+            this.IsLoading = true; // Se inicia el spinner
             axiosFunction.post("Acceso/Login", this.usuario, {
                 headers: {
                     'Content-Type': 'application/json'
                 }
             })
                 .then(resultado => {
+
+                    //Se agrega al localStorage los token de acceso
                     localStorage.setItem('token', resultado.data.token);
                     localStorage.setItem('refreshToken', resultado.data.refreshToken);
-                    this.$router.push({ name: 'home' })
+
+                    decodeJwt();
+                    this.IsLoading = false; //Finaliza el spinner
+                    
+                    this.$router.push({ name: 'home' }) 
 
 
+                    
                 })
                 .catch(error => {
                     console.log(error)
@@ -71,13 +77,15 @@ export default {
 
                         })
                     }
+                    this.IsLoading = false;
+
 
                 });
+        },
 
 
-        }
 
-
+        
     }
 }
 
