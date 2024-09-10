@@ -8,7 +8,7 @@
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Advertencia de Sesión</h1>
                 </div>
                 <div class="modal-body">
-                    <p>Tu sesión está por expirar</p>
+                    <p>Tu sesión está por expirar en {{ countdown }} segundos.</p>
                     <p>¿Quieres extenderla?</p>
                 </div>
                 <div class="modal-footer">
@@ -24,30 +24,73 @@
 <script>
 import logout from '@/Functions/logout';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import axiosFunction from '@/Functions/axios';
+import router from '@/router';
 
 export default {
     name: "SessionWarningModal",
     data() {
         return {
+            countdown: 60
         }
     },
     mounted() {
-
+        this.startCountDown();
     },
     methods: {
+        extendSession() {
+            const datosAcceso = {
+                token: localStorage.getItem('token'),
+                refreshToken: localStorage.getItem('refreshToken')
+            }
+
+            axiosFunction.post('Acceso/RefreshToken', datosAcceso, {
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+                .then(resultado => {
+
+                    const newToken = resultado.data.token;
+                    const newRefreshToken = resultado.data.refreshToken;
+
+                    localStorage.setItem('token', newToken);
+                    localStorage.setItem('refreshToken', newRefreshToken);
+
+                    axiosFunction.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+                    // Cierra el modal al extender la sesión correctamente
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                    modal.hide();
+                })
+                .catch(error => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('refreshToken');
+                    console.log(error);
+                    router.push({ name: 'login' });
+                });
+        },
+
         logout() {
-            const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'));
+            const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
             modal.hide();
             logout();
-            window.location.reload();
         },
-        countDown(){
 
+        startCountDown() {
+
+            let lanzamiento = setInterval(() => {
+
+                console.log("La sesión terminará en: ", this.countdown);
+                this.countdown--;
+                
+                if (this.countdown === 0) {
+                    clearInterval(lanzamiento);
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                    modal.hide();
+                    logout();
+                }
+            }, 1000)
         }
-
-        
-
-
     }
 }
 </script>

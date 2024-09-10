@@ -1,26 +1,38 @@
 <template>
-    <div class="container">
+    <div class="conteiner">
         <div class="spinner-container">
-            <spinner-component
-                :isLoading="IsLoading"
-                :can-cancel="false"
-                :is-full-page="false"
-                @update:isLoading="IsLoading = $event"
-            />
+            <spinner-component :isLoading="IsLoading" :can-cancel="false" :is-full-page="false"
+                @update:isLoading="IsLoading = $event" />
         </div>
-        <form>
-            <div class="">
-                <label for="" class="form-label">Usuario</label>
-                <input type="text" class="form-control" v-model="usuario.nombreUsuario">
+
+        <div class="row">
+            <!-- Formulario -->
+            <div class="col">
+                <div class="formHead">
+                    <p>Inicia sesión en tu cuenta</p>
+                </div>
+                <form class="formulario">
+                    <div class="">
+                        <label for="" class="form-label">Usuario</label>
+                        <input type="text" class="form-control" v-model="usuario.nombreUsuario">
+                    </div>
+                    <div class="">
+                        <label for="" class="form-label">Contraseña</label>
+                        <input type="password" name="" id="" class="form-control" v-model="usuario.password">
+                    </div>
+                    <div class="">
+                        <button class="boton" @click.prevent="login()">Iniciar Sesión</button>
+                    </div>
+                </form>
             </div>
-            <div class="">
-                <label for="" class="form-label">Contraseña</label>
-                <input type="password" name="" id="" class="form-control" v-model="usuario.password">
+
+            <!-- Logo -->
+            <div class="col">
+
             </div>
-            <div class="">
-                <button class="btn btn-success" @click.prevent="login()">Iniciar Sesión</button>
-            </div>
-        </form>
+
+
+        </div>
     </div>
 </template>
 
@@ -62,15 +74,15 @@ export default {
 
                     decodeJwt();
                     this.IsLoading = false; //Finaliza el spinner
-                    
-                    this.$router.push({ name: 'home' }) 
+
+                    this.$router.push({ name: 'home' })
 
 
-                    
+
                 })
                 .catch(error => {
                     console.log(error)
-                    if(error.response.status == 400){
+                    if (error.response.status == 400) {
                         toast.warning("Datos Ingresados Incorrectos", {
                             autoClose: 2000,
                             position: toast.POSITION.BOTTOM_RIGHT,
@@ -84,8 +96,6 @@ export default {
         },
 
 
-
-        
     }
 }
 
@@ -94,4 +104,37 @@ export default {
 
 </script>
 
-<style></style>
+<style>
+.col-1{
+    border: 1px solid black;
+}
+.col-2{
+    border: 1px solid black;
+}
+
+.formulario{
+    max-width: 80%;
+    align-content: center;
+    margin: auto;
+}
+
+.formHead{
+    text-align: center;
+    
+}
+
+.boton{
+    background-color: #DA5662;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 5px;
+    width: 150px;
+    height: 50px;
+    margin-top: 50px;
+}
+
+input{
+    background-color: #DA5662;
+}
+</style>

@@ -1,8 +1,6 @@
 <template>
   <div class="container">
     <h1>Hola soy Home</h1>
-    <h2>Bienvenido {{ nombreUsuario }}</h2>
-    <h2>{{ exp }}</h2>
 
 
     <div class="row">
@@ -11,12 +9,8 @@
         <h2>Pacientes</h2>
         <div class="list">
           <table class="table table-striped">
-            <spinner-component
-              :isLoading="IsLoading"
-              :can-cancel="false"
-              :is-full-page="false"
-              @update:isLoading="IsLoading = $event"
-            />
+            <spinner-component :isLoading="IsLoading" :can-cancel="false" :is-full-page="false"
+              @update:isLoading="IsLoading = $event" />
             <thead>
               <tr>
                 <th>#</th>
@@ -45,15 +39,12 @@
     </div>
   </div>
 
-  <session-warning-modal></session-warning-modal>
 
 </template>
 
 <script>
 import Spinner from '@/components/Spinner.vue';
 import axiosFunction from '@/Functions/axios';
-import SessionWarningModal from '@/components/SessionWarningModal.vue';
-import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import logout from '@/Functions/logout';
 
 export default {
@@ -63,18 +54,14 @@ export default {
       listarUsuarios: [],
       listarAsignaciones: [],
       IsLoading: true,
-      nombreUsuario: "",
-      exp: 0,
-      id: 0
+      id: 0,
     }
   },
   components: {
     'spinner-component': Spinner,
-    'session-warning-modal': SessionWarningModal
   },
   mounted() {
-    this.usuarios(),
-    this.info()
+    this.usuarios()
   },
   methods: {
     usuarios() {
@@ -98,30 +85,6 @@ export default {
         .catch(error => {
           console.error(error);
         });
-    },
-    info(){
-      const infoUser = JSON.parse(localStorage.getItem('dataUser'));
-      this.nombreUsuario = infoUser.nombreUsuario;
-
-      const expirationTime = infoUser.expToken * 1000;
-      const warningTime = expirationTime - 4 * 60 * 1000;
-      const currentTime = Date.now();
-
-      if(currentTime < warningTime){
-        setTimeout(() => {
-           const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'))
-           modal.show();
-        }, warningTime - currentTime);
-      } else if( currentTime >= warningTime && currentTime < expirationTime ){
-        const modal = new bootstrap.Modal(document.getElementById('staticBackdrop'))
-        modal.show();
-      }
-
-      if(currentTime > expirationTime){
-        this.exp = "Token Vencido"
-      } else if( currentTime < expirationTime ){
-        this.exp = "Token Valido"
-      }
     },
 
     logout() {
