@@ -9,7 +9,7 @@
             <!-- Formulario -->
             <div class="col">
                 <div class="formHead">
-                    <p>Inicia sesión en tu cuenta</p>
+                    <h1>Inicia sesión en tu cuenta</h1>
                 </div>
                 <form class="formulario">
                     <div class="">
@@ -21,9 +21,10 @@
                         <input type="password" name="" id="" class="form-control" v-model="usuario.password">
                     </div>
                     <div class="">
-                        <button class="boton" @click.prevent="login()">Iniciar Sesión</button>
+                        <button class="btn btn-success" @click.prevent="login()">Iniciar Sesión</button>
                     </div>
                 </form>
+                <p>¿No tienes una cuenta? Regístrate <router-link :to="`/register`">aquí</router-link> </p>
             </div>
 
             <!-- Logo -->
@@ -33,6 +34,7 @@
 
 
         </div>
+
     </div>
 </template>
 
@@ -43,16 +45,16 @@ import 'vue3-toastify/dist/index.css'
 import Spinner from '@/components/Spinner.vue';
 import { decodeJwt } from '@/Functions/decodeJwt';
 
-
 export default {
     name: 'LoginView',
+    // mixins: [endSession],
     data() {
         return {
             usuario: {
                 nombreUsuario: '',
                 password: ''
             },
-            IsLoading: false
+            IsLoading: false,
         }
     },
     components: {
@@ -74,8 +76,14 @@ export default {
 
                     decodeJwt();
                     this.IsLoading = false; //Finaliza el spinner
-
                     this.$router.push({ name: 'home' })
+                    if(resultado.data.statusCode == 200){
+                        toast.success("Ha iniciado sesión con exito", {
+                            autoClose: 5000,
+                            position: toast.POSITION.BOTTOM_RIGHT
+                        })
+                    }
+                    this.$root.expirationSession();
 
 
 
@@ -84,7 +92,7 @@ export default {
                     console.log(error)
                     if (error.response.status == 400) {
                         toast.warning("Datos Ingresados Incorrectos", {
-                            autoClose: 2000,
+                            autoClose: 5000,
                             position: toast.POSITION.BOTTOM_RIGHT,
 
                         })
@@ -103,38 +111,3 @@ export default {
 
 
 </script>
-
-<style>
-.col-1{
-    border: 1px solid black;
-}
-.col-2{
-    border: 1px solid black;
-}
-
-.formulario{
-    max-width: 80%;
-    align-content: center;
-    margin: auto;
-}
-
-.formHead{
-    text-align: center;
-    
-}
-
-.boton{
-    background-color: #DA5662;
-    color: white;
-    border: none;
-    border-radius: 20px;
-    padding: 5px;
-    width: 150px;
-    height: 50px;
-    margin-top: 50px;
-}
-
-input{
-    background-color: #DA5662;
-}
-</style>

@@ -26,18 +26,39 @@ import logout from '@/Functions/logout';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axiosFunction from '@/Functions/axios';
 import router from '@/router';
+import { decodeJwt } from '@/Functions/decodeJwt';
 
 export default {
     name: "SessionWarningModal",
     data() {
         return {
-            countdown: 60
+            countdown: 60,
+            countDownInterval: null
         }
     },
     mounted() {
         this.startCountDown();
     },
     methods: {
+        startCountDown() {
+            this.countdown = 60;
+
+            this.countDownInterval = setInterval(() => {
+
+                this.countdown--;
+
+                if (this.countdown === 0) {
+                    const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
+                    modal.hide();
+                    this.endCountDown();
+                    logout();
+                    this.$nextTick(() => {
+                        this.$root.showModal = false;
+                    });
+                }
+            }, 1000)
+        },
+
         extendSession() {
             const datosAcceso = {
                 token: localStorage.getItem('token'),
@@ -56,11 +77,20 @@ export default {
 
                     localStorage.setItem('token', newToken);
                     localStorage.setItem('refreshToken', newRefreshToken);
-
+                    decodeJwt();
                     axiosFunction.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
-                    // Cierra el modal al extender la sesión correctamente
+
                     const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
                     modal.hide();
+
+                    this.endCountDown();
+
+                    this.$nextTick(() => {
+                        this.$root.showModal = false;
+                        this.$root.expirationSession();
+                    });
+
+
                 })
                 .catch(error => {
                     localStorage.removeItem('token');
@@ -73,24 +103,23 @@ export default {
         logout() {
             const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
             modal.hide();
+            this.endCountDown();
             logout();
+            this.$nextTick(() => {
+                this.$root.showModal = false;
+            });
         },
 
-        startCountDown() {
 
-            let lanzamiento = setInterval(() => {
-
-                console.log("La sesión terminará en: ", this.countdown);
-                this.countdown--;
-                
-                if (this.countdown === 0) {
-                    clearInterval(lanzamiento);
-                    const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
-                    modal.hide();
-                    logout();
-                }
-            }, 1000)
+        endCountDown() {
+            if (this.countDownInterval) {
+                clearInterval(this.countDownInterval);
+                this.countDownInterval = null;
+                this.countdown = 60;
+            }
         }
+
+
     }
 }
 </script>
