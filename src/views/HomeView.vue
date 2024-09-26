@@ -35,6 +35,7 @@
     <div class="botones">
       <button class="btn btn-primary" @click="logout()">Cerrar Sesión</button>
       <button class="btn btn-primary" @click="asignaciones()">Mostrar Asignaciones</button>
+      <button class="btn btn-primary" @click="pacientes()">Tabla Pacientes</button>
       <button class="btn btn-primary" @click="info()">Mostrar Info</button>
     </div>
   </div>
@@ -85,6 +86,9 @@ export default {
         .catch(error => {
           console.error(error);
         });
+    },
+    pacientes() {
+      this.$router.push({ name: 'pacientes' });
     },
 
     logout() {

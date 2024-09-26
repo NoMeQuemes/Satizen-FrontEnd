@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
+import TablaPacientes from '@/views/TablaPacientes.vue'
 
 const routes = [
   {
@@ -23,6 +24,11 @@ const routes = [
       requiresAuth: true,
       title: 'Home'
     }
+  },
+  {
+    path: '/pacientes',
+    name: 'pacientes',  
+    component: TablaPacientes 
   }
 ]
 
