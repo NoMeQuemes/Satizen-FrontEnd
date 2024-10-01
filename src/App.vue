@@ -1,6 +1,8 @@
 <template>
   <router-view />
   <session-warning-modal v-if="showModal"></session-warning-modal>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+
 </template>
 
 <script>
