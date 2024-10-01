@@ -5,6 +5,8 @@ import RegisterView from '@/views/RegisterView.vue'
 import InstitucionesView from '@/views/InstitucionesView.vue'
 
 
+import TablaPacientes from '@/views/TablaPacientes.vue'
+import InicioView from '@/views/InicioView.vue' 
 
 const routes = [
   {
@@ -21,8 +23,7 @@ const routes = [
     path: '/home',
     name: 'home',
     component: HomeView,
-    meta:
-    {
+    meta: {
       requiresAuth: true,
       title: 'Home'
     }
@@ -35,6 +36,20 @@ const routes = [
     {
       requiresAuth: true,
       title: 'Instituciones'
+    }
+  },
+  {
+    path: '/pacientes',
+    name: 'pacientes',
+    component: TablaPacientes
+  },
+  {
+    path: '/inicio',
+    name: 'inicio',
+    component: InicioView, 
+    meta: {
+      requiresAuth: true,
+      title: 'Inicio'
     }
   }
 ]
@@ -54,6 +69,5 @@ router.beforeEach((to, from, next) => {
     next();
   }
 });
-
 
 export default router
