@@ -15,7 +15,7 @@
     props: {
       isLoading: {
         type: Boolean,
-        required: true
+        required: true 
       },
       canCancel: {
         type: Boolean,

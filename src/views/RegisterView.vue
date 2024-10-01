@@ -16,7 +16,7 @@
             </div>
             <div class="">
                 <label class="form-label">Rol</label>
-                <input class="form-control" type="number" value="1" v-model="usuario.idRoles" disabled>
+                <input class="form-control" type="number" value="1" v-model="usuario.idRoles">
             </div>
             <div>
                 <label for="" class="form-label">Contraseña:</label>

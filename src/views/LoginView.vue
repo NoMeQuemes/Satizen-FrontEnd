@@ -1,8 +1,8 @@
 <template>
     <div class="conteiner">
         <div class="spinner-container">
-            <spinner-component :isLoading="IsLoading" :can-cancel="false" :is-full-page="false"
-                @update:isLoading="IsLoading = $event" />
+            <Spinner :isLoading="loginStore.IsLoading" :can-cancel="false" :is-full-page="false"
+                @update:isLoading="loginStore.IsLoading = $event" />
         </div>
 
         <div class="row">
@@ -38,76 +38,21 @@
     </div>
 </template>
 
-<script>
-import axiosFunction from '@/Functions/axios';
-import { toast } from 'vue3-toastify'
-import 'vue3-toastify/dist/index.css'
+<script setup>
+import { useLoginStore } from '@/store/login';
+import { reactive } from 'vue';
 import Spinner from '@/components/Spinner.vue';
-import { decodeJwt } from '@/Functions/decodeJwt';
-
-export default {
-    name: 'LoginView',
-    // mixins: [endSession],
-    data() {
-        return {
-            usuario: {
-                nombreUsuario: '',
-                password: ''
-            },
-            IsLoading: false,
-        }
-    },
-    components: {
-        "spinner-component": Spinner
-    },
-    methods: {
-        login() {
-            this.IsLoading = true; // Se inicia el spinner
-            axiosFunction.post("Acceso/Login", this.usuario, {
-                headers: {
-                    'Content-Type': 'application/json'
-                }
-            })
-                .then(resultado => {
-
-                    //Se agrega al localStorage los token de acceso
-                    localStorage.setItem('token', resultado.data.token);
-                    localStorage.setItem('refreshToken', resultado.data.refreshToken);
-
-                    decodeJwt();
-                    this.IsLoading = false; //Finaliza el spinner
-                    this.$router.push({ name: 'home' })
-                    if(resultado.data.statusCode == 200){
-                        toast.success("Ha iniciado sesión con exito", {
-                            autoClose: 5000,
-                            position: toast.POSITION.BOTTOM_RIGHT
-                        })
-                    }
-                    this.$root.expirationSession();
 
 
+const loginStore = useLoginStore();
 
-                })
-                .catch(error => {
-                    console.log(error)
-                    if (error.response.status == 400) {
-                        toast.warning("Datos Ingresados Incorrectos", {
-                            autoClose: 5000,
-                            position: toast.POSITION.BOTTOM_RIGHT,
+const usuario = reactive({
+    nombreUsuario: "",
+    password: ""
+});
 
-                        })
-                    }
-                    this.IsLoading = false;
-
-
-                });
-        },
-
-
-    }
+const login = () => {
+    loginStore.login(usuario)
 }
-
-
-
 
 </script>

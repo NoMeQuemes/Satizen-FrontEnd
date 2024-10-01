@@ -1,23 +1,27 @@
-import { createApp } from 'vue'
-import App from './App.vue'
+import { createApp } from "vue";
+import App from "./App.vue";
+import router from "./router";
+import { createPinia } from 'pinia';
 
 //Bootstrap
-import router from './router'
-import 'bootstrap/dist/css/bootstrap.css';
-import 'bootstrap/dist/js/bootstrap.bundle';
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/js/bootstrap.bundle";
 
 //Funciones propias
-import axiosFunction from './Functions/axios'
-import logout from './Functions/logout'
+import axiosFunction from "./Functions/axios"; //funciones propias de axios (librería para usar APIs)
 
 //Librerias extra
-import { LoadingPlugin } from 'vue-loading-overlay';
-import 'vue-loading-overlay/dist/css/index.css';
+import { LoadingPlugin } from "vue-loading-overlay";
+import "vue-loading-overlay/dist/css/index.css";
+
+const pinia = createPinia();
 
 const app = createApp(App);
 
+
 app.config.globalProperties.$axios = axiosFunction;
-app.config.globalProperties.$logout = logout;
 app.use(LoadingPlugin);
 
-app.use(router).mount('#app')
+app.use(router);
+app.use(pinia);
+app.mount("#app");
