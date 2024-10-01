@@ -1,9 +1,11 @@
 import { defineStore } from "pinia";
 import { useRouter } from "vue-router";
-import { dataUser } from "@/Functions/decodeJwt";
+// import { dataUser } from "@/Functions/decodeJwt";
 import { useExpirationSession } from "./expirationSession";
+import { useDecodeJwT } from "./decodeJwt";
 
 export const useLogoutStore = defineStore("logout", () => {
+    const decodeJwt = useDecodeJwT();
     const expirationSession = useExpirationSession();
     const router = useRouter();
 
@@ -11,8 +13,7 @@ export const useLogoutStore = defineStore("logout", () => {
     function logout () {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
-        delete dataUser.idUsuario, dataUser.nombreUsuario, dataUser.rolUsuario, dataUser.expToken;
-        localStorage.removeItem("dataUser");
+        delete decodeJwt.dataUser.idUsuario, decodeJwt.dataUser.nombreUsuario, decodeJwt.dataUser.rolUsuario, decodeJwt.dataUser.expToken;
         expirationSession.stopCountDownExpirationSession();
         router.push({ name: 'login' })
     }
