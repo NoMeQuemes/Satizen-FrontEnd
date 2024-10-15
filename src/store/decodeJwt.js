@@ -1,8 +1,9 @@
 import { defineStore } from "pinia";
 import { jwtDecode } from "jwt-decode";
+import { reactive } from "vue";
 
 export const useDecodeJwT = defineStore("decodeJwt", () => {
-    let dataUser =({
+    let dataUser = reactive({
         idUsuario: 0,
         nombreUsuario: "",
         rolUsuario: 0,
@@ -21,7 +22,7 @@ export const useDecodeJwT = defineStore("decodeJwt", () => {
             dataUser.expToken = tokenDecoded.exp;
         }
         
-        // localStorage.setItem('dataUser', JSON.stringify(dataUser));
+        localStorage.setItem('satizenInfo', JSON.stringify(dataUser.rolUsuario));
     }
 
     return{

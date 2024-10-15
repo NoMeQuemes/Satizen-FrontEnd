@@ -3,6 +3,7 @@ import HomeView from '../views/HomeView.vue'
 import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import InstitucionesView from '@/views/InstitucionesView.vue'
+import UsuariosView from '@/views/UsuariosView.vue'
 
 
 import TablaPacientes from '@/views/TablaPacientes.vue'
@@ -50,6 +51,16 @@ const routes = [
     meta: {
       requiresAuth: true,
       title: 'Inicio'
+    }
+  },
+  {
+    path: '/usuarios',
+    name: 'usuarios',
+    component: UsuariosView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Usuarios'
     }
   }
 ]

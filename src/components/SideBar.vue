@@ -20,7 +20,7 @@
             </router-link>
 
             <!-- Opcion individual -->
-            <router-link :to="{ name: 'instituciones' }"  class="opciones">
+            <router-link :to="{ name: 'instituciones' }" v-rol="'1'" class="opciones">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="2">
@@ -55,7 +55,7 @@
             </div>
 
             <!-- Opcion individual -->
-            <div class="opciones">
+            <router-link :to="{ name: 'usuarios' }" v-rol="'1'"  class="opciones">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
                     <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"
                         stroke-width="2">
@@ -66,7 +66,8 @@
                     </g>
                 </svg>
                 <div class="enlace">Usuarios</div>
-            </div>
+                <input type="checkbox" class="dropdown__check">
+            </router-link>
         </div>
 
         <!-- Pie de la SideBar -->
