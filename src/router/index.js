@@ -8,6 +8,7 @@ import UsuariosView from '@/views/UsuariosView.vue'
 
 import TablaPacientes from '@/views/TablaPacientes.vue'
 import InicioView from '@/views/InicioView.vue' 
+import NaChat from '@/views/NaChat.vue'
 
 const routes = [
   {
@@ -29,11 +30,7 @@ const routes = [
       title: 'Home'
     }
   },
-  {
-    path: '/nachat',
-    name: 'nachat',
-    component: NaChat
-  },
+
   {
     path: '/instituciones',
     name: 'instituciones',
@@ -43,6 +40,11 @@ const routes = [
       requiresAuth: true,
       title: 'Instituciones'
     }
+  },
+  {
+    path: '/nachat',
+    name: 'nachat',
+    component: NaChat
   },
   {
     path: '/pacientes',
