@@ -30,6 +30,11 @@ const routes = [
     }
   },
   {
+    path: '/nachat',
+    name: 'nachat',
+    component: NaChat
+  },
+  {
     path: '/instituciones',
     name: 'instituciones',
     component: InstitucionesView,
