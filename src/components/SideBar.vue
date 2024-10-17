@@ -27,12 +27,13 @@
           <div class="enlace">Usuarios</div>
         </div>
   
-        <!-- Acordeón de Usuarios -->
-        <div v-if="dropdownVisible" class="dropdown">
-          <a href="#" class="dropdown__item">Roles</a>
-          <a href="#" class="dropdown__item">Permisos</a>
-        </div>
-  
+<!-- Acordeón de Usuarios -->
+<div v-if="dropdownVisible" class="dropdown">
+  <router-link to="/usuarios" class="dropdown__item">Usuarios</router-link>
+  <router-link to="/roles" class="dropdown__item">Roles</router-link>
+  <router-link to="/permisos" class="dropdown__item">Permisos</router-link>
+</div>
+
         <!-- Opción individual -->
         <router-link :to="{ name: 'instituciones' }" class="opciones">
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
