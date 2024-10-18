@@ -4,6 +4,7 @@ import LoginView from '@/views/LoginView.vue'
 import RegisterView from '@/views/RegisterView.vue'
 import InstitucionesView from '@/views/InstitucionesView.vue'
 import UsuariosView from '@/views/UsuariosView.vue'
+import PersonalView from '@/views/PersonalView.vue'
 
 
 import TablaPacientes from '@/views/TablaPacientes.vue'
@@ -57,6 +58,16 @@ const routes = [
     path: '/usuarios',
     name: 'usuarios',
     component: UsuariosView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Usuarios'
+    }
+  },
+  {
+    path: '/personal',
+    name: 'personal',
+    component: PersonalView,
     meta:
     {
       requiresAuth: true,

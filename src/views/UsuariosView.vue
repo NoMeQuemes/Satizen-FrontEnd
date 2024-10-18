@@ -38,7 +38,8 @@
                 <td>{{ usuario.idUsuario }}</td>
                 <td>{{ usuario.nombreUsuario }}</td>
                 <td>{{ usuario.correo || '-' }}</td>
-                <td>{{ obtenerNombreRol(usuario.idRoles) }}</td>
+                <!-- <td>{{ obtenerNombreRol(usuario.idRoles) }}</td> -->
+                <td>{{ usuario.roles }}</td>
                 <td>{{ $formatDate(usuario.fechaCreacion) }}</td>
                 <td>{{ usuario.fechaActualizacion ? $formatDate(usuario.fechaActualizacion) : '-' }}</td>
                 <td>
@@ -128,17 +129,17 @@ function listarRoles() {
     }
   })
     .then(resultado => {
-      roles = resultado.data.resultado;
+      roles.value = resultado.data.resultado;
     })
     .catch((error) => {
       console.log(error);
     })
 }
 
-function obtenerNombreRol(idRol) {
-  const rol = roles.find(rol => rol.idRol === idRol);  // Busca el rol por ID
-  return rol ? rol.nombre : 'Desconocido';  // Devuelve el nombre del rol o 'Desconocido'
-}
+// function obtenerNombreRol(idRol) {
+//   const rol = roles.find(rol => rol.idRol === idRol);  // Busca el rol por ID
+//   return rol ? rol.nombre : 'Desconocido';  // Devuelve el nombre del rol o 'Desconocido'
+// }
 
 function eliminarUsuario(id) {
   idUsuario.value = id;
