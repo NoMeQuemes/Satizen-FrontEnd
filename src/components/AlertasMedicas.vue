@@ -36,62 +36,55 @@
   </div>
 </template>
 
+<script setup>
+import { ref } from 'vue';
 
-<script>
-export default {
-  name: "AlertasMedicas",
-  data() {
-    return {
-      alerts: [
-        {
-          userName: "Alex",
-          doctor: "Sanches Carlos",
-          address: "San Juan",
-          phone: "2645259424",
-          diagnosis: "Hepatitis",
-          level: "alta", 
-        },
-        
-        {
-          userName: "Tony Stark",
-          doctor: "Pérez Juan",
-          address: "Buenos Aires",
-          phone: "2645111122",
-          diagnosis: "Anemia",
-          level: "media", 
-        },
-      ],
-    };
+const alerts = ref([
+  {
+    userName: "Alex",
+    doctor: "Sanches Carlos",
+    address: "San Juan",
+    phone: "2645259424",
+    diagnosis: "Hepatitis",
+    level: "alta", 
   },
-  methods: {
-    alertLevelClass(level) {
-      switch (level) {
-        case "alta":
-          return "alerta-alta";
-        case "media":
-          return "alerta-media";
-        case "baja":
-          return "alerta-baja";
-        case "informativa":
-          return "alerta-informativa";
-        default:
-          return "";
-      }
-    },
+  {
+    userName: "Tony Stark",
+    doctor: "Pérez Juan",
+    address: "Buenos Aires",
+    phone: "2645111122",
+    diagnosis: "Anemia",
+    level: "media", 
   },
+]);
+
+const alertLevelClass = (level) => {
+  switch (level) {
+    case "alta":
+      return "alerta-alta";
+    case "media":
+      return "alerta-media";
+    case "baja":
+      return "alerta-baja";
+    case "informativa":
+      return "alerta-informativa";
+    default:
+      return "";
+  }
 };
 </script>
-
 <style scoped>
 /* =====================CONTENEDOR PRINCIPAL====================== */
 .alertas {
   width: 100%;
-  padding: 30px 100px 100px 100px;
+  padding: 30px;
   background-color: #ffffff;
   border-radius: 10px;
   max-height: 500px;
   overflow-y: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  max-width: 50%;
+  margin-left: 25%;
 }
 
 /* ======================TARJETAS DE ALERTAS======================= */
@@ -103,10 +96,11 @@ export default {
 
 .cards-container {
   display: flex;
-  flex-direction: column;
-  gap: 10px; 
+  flex-direction: column; /* Hacer que las alertas se apilen verticalmente */
+  gap: 10px; /* Espacio entre las tarjetas */
 }
 
+/* Mantener el resto del estilo igual */
 .card-wrapper {
   position: relative;
   width: 100%;
@@ -119,8 +113,6 @@ export default {
   overflow: hidden;
   border: none;
   margin-bottom: 20px;
-  
-  
 }
 
 .alerta-alta {
@@ -192,8 +184,7 @@ export default {
   font-size: 14px; 
 }
 
-/* ======================MEDIAQUERY PARA MONITERES DE 20 PULGADAS PARA ABAJO======================= */
-
+/* ======================MEDIAQUERY PARA MONITORES DE 20 PULGADAS PARA ABAJO======================= */
 
 @media (max-width: 20in) {
   .alertas {
@@ -201,7 +192,7 @@ export default {
   }
 
   .cards-container {
-    gap: 5px; 
+    gap: 5px; /* Espacio reducido para pantallas más pequeñas */
   }
 
   .card {
@@ -212,7 +203,5 @@ export default {
     width: 40px; 
     height: 40px;
   }
-
- 
 }
 </style>

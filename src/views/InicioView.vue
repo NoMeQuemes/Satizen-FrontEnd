@@ -46,19 +46,21 @@ export default {
   height: 100vh; /* Ocupa toda la altura de la pantalla */
 }
 
-
-
 /* Estilos del contenedor principal */
 .main-content {
+  display: grid;
   grid-area: content; /* Define que este componente ocupe el área de contenido principal */
-  margin-top: 60px; /* Deja espacio para el header fijo */
+  grid-template-columns: 1fr; /* Contenido a toda la pantalla */
+  grid-template-rows: auto auto; /* Permite que los componentes se apilen verticalmente */
+  gap: 20px; /* Añadir espacio entre el Dashboard y las alertas */
   padding: 20px;
   background-color: #f5f5f5;
-  display: flex;
-  justify-content: left;
-  align-items: center;
 }
 
-
+.centered-content {
+  display: flex;
+  flex-direction: column; /* Asegura que el Dashboard y Alertas se apilen verticalmente */
+  width: 100%; /* Ocupa todo el ancho disponible */
+}
 
 </style>
