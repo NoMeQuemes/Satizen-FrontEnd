@@ -27,7 +27,7 @@ const routes = [
     component: HomeView,
     meta: {
       requiresAuth: true,
-      title: 'Home'
+      title: 'Satizen - Home'
     }
   },
   {
@@ -37,7 +37,7 @@ const routes = [
     meta:
     {
       requiresAuth: true,
-      title: 'Instituciones'
+      title: 'Satizen - Instituciones'
     }
   },
   {
@@ -61,7 +61,7 @@ const routes = [
     meta:
     {
       requiresAuth: true,
-      title: 'Usuarios'
+      title: 'Satizen - Usuarios'
     }
   },
   {
@@ -71,7 +71,7 @@ const routes = [
     meta:
     {
       requiresAuth: true,
-      title: 'Usuarios'
+      title: 'Satizen - Personal'
     }
   }
 ]
@@ -90,6 +90,11 @@ router.beforeEach((to, from, next) => {
   } else {
     next();
   }
+});
+
+router.afterEach((to) => {
+  const defaultTitle = "Satizen"; // Título por defecto
+  document.title = to.meta.title || defaultTitle;
 });
 
 export default router

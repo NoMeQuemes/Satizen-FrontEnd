@@ -5,8 +5,8 @@ import router from "../router";
 
 
 const axiosFunction = axios.create({
-   baseURL: 'http://www.satizen.somee.com/api/'
-  //baseURL: "http://localhost:7298/api/",
+  //  baseURL: 'http://www.satizen.somee.com/api/'
+  baseURL: "http://localhost:7298/api/",
 });
 
 // Este interceptor se ejecuta antes de que una solicitud salga del cliente.
