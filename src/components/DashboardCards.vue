@@ -30,7 +30,7 @@ export default {
 .dashboard-container {
   display: flex;
   justify-content: center;
-  padding: 20px;
+  padding-top: 20px;
   background-color: #e0e0e000; 
   border-radius: 10px;
   margin-bottom: 5px;

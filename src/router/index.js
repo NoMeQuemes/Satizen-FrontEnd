@@ -5,9 +5,10 @@ import RegisterView from '@/views/RegisterView.vue'
 import InstitucionesView from '@/views/InstitucionesView.vue'
 import UsuariosView from '@/views/UsuariosView.vue'
 import PersonalView from '@/views/PersonalView.vue'
+import PacientesView from '@/views/PacientesView.vue'
 
 
-import TablaPacientes from '@/views/TablaPacientes.vue'
+// import TablaPacientes from '@/views/TablaPacientes.vue'
 import InicioView from '@/views/InicioView.vue' 
 
 const routes = [
@@ -43,7 +44,12 @@ const routes = [
   {
     path: '/pacientes',
     name: 'pacientes',
-    component: TablaPacientes
+    component: PacientesView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Satizen - Pacientes'
+    }
   },
   {
     path: '/inicio',

@@ -66,6 +66,7 @@ function crearInstitucion() {
     modal.hide();
     axiosFunction.post("Institucion/CrearInstitucion", institucion)
         .then(() => {
+            limpiarArreglo();
             emit('actualizarUsuarios')
             toast.success("Realizado con exito", {
                 autoClose: 5000,
@@ -73,6 +74,7 @@ function crearInstitucion() {
             })
         })
         .catch((error) => {
+            limpiarArreglo();
             console.log(error);
             toast.danger("Error", {
                 autoClose: 5000,

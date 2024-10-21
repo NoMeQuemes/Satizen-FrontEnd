@@ -93,7 +93,7 @@ function crearPersonal(){
         })
         .catch((error) => {
             console.log(error);
-            toast.danger("Error", {
+            toast.error("Error", {
                 autoClose: 5000,
                 position: toast.POSITION.BOTTOM_RIGHT
             })

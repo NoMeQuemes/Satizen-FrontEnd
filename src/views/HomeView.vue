@@ -24,6 +24,14 @@ import SideBar from '@/components/SideBar.vue';
 import Encabezado from '@/components/Encabezado.vue';
 import DashboardCards from '@/components/DashboardCards.vue';
 import AlertasMedicas from '@/components/AlertasMedicas.vue';
+// import { onMounted } from 'vue';
+// import { useAlertasMedicas } from '@/store/alertasMedicas';
+
+// const alertasMedicas = useAlertasMedicas();
+
+// onMounted(() => {
+//   alertasMedicas.listarLlamados();
+// })
 
 </script>
 
@@ -43,9 +51,10 @@ import AlertasMedicas from '@/components/AlertasMedicas.vue';
   display: flex;
   flex-direction: column;
   padding: 20px;
-  padding-top: 100px; /* Añadir espacio desde el top para evitar que lo tape la barra de navegación */
+  padding-top: 60px; /* Añadir espacio desde el top para evitar que lo tape la barra de navegación */
   background-color: #f5f5f5;
   overflow-y: auto; /* Para hacer scroll si el contenido es muy largo */
+  align-items: center;
 }
 
 </style>
