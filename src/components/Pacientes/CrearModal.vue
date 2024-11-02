@@ -6,7 +6,8 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <h1 class="modal-title fs-5" id="staticBackdropLabel">Crear Paciente</h1>
-                    <button @click="limpiarArreglo()" type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <button @click="limpiarArreglo()" type="button" class="btn-close" data-bs-dismiss="modal"
+                        aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <form class="row g-3">
@@ -38,13 +39,21 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="">
+                        <div class="col-md-6">
                             <label for="" class="form-label">Dni: </label>
                             <input type="number" class="form-control" v-model="paciente.dni">
                         </div>
-                        <div class="">
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Dirección: </label>
+                            <input type="text" class="form-control" v-model="paciente.direccionPaciente">
+                        </div>
+                        <div class="col-md-6">
                             <label for="" class="form-label">N° Habitación: </label>
                             <input type="number" class="form-control" v-model="paciente.numeroHabitacionPaciente">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Celular: </label>
+                            <input type="number" class="form-control" v-model="paciente.celularPaciente">
                         </div>
                         <div class="">
                             <label for="" class="form-label">Observación: </label>
@@ -53,7 +62,8 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button @click="limpiarArreglo()" type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                    <button @click="limpiarArreglo()" type="button" class="btn btn-secondary"
+                        data-bs-dismiss="modal">Cerrar</button>
                     <button @click="crearUsuario" type="button" class="btn btn-primary">Guardar</button>
                 </div>
             </div>
@@ -68,13 +78,16 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import { toast } from 'vue3-toastify'
 
 let paciente = reactive({
-    idUsuario: 0,
     idInstitucion: 0,
+    idUsuario: 0,
     nombrePaciente: "",
     apellido: "",
     dni: 0,
     numeroHabitacionPaciente: 0,
-    observacionPaciente: ""
+    observacionPaciente: "",
+    direccionPaciente: "",
+    // celularPaciente: 0, Solucionar que no se envíe este campo cuando sea nulo
+    celularAcompañante: null,
 })
 let listaInstituciones = ref([]);
 let listaUsuarios = ref([]);
@@ -83,7 +96,7 @@ const emit = defineEmits(['actualizarPacientes']);
 
 onMounted(() => {
     listarInstituciones(),
-    listarUsuarios()
+        listarUsuarios()
 })
 
 function crearUsuario() {
@@ -128,14 +141,14 @@ function listarUsuarios() {
         })
 }
 
-function limpiarArreglo(){
+function limpiarArreglo() {
     paciente.idUsuario = 0,
-    paciente.idInstitucion = 0,
-    paciente.nombrePaciente = "",
-    paciente.apellido = "",
-    paciente.dni = 0,
-    paciente.numeroHabitacionPaciente = 0,
-    paciente.observacionPaciente = ""
+        paciente.idInstitucion = 0,
+        paciente.nombrePaciente = "",
+        paciente.apellido = "",
+        paciente.dni = 0,
+        paciente.numeroHabitacionPaciente = 0,
+        paciente.observacionPaciente = ""
 }
 
 </script>

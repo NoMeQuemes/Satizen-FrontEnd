@@ -16,9 +16,18 @@
         <div class="enlace">Inicio</div>
       </router-link>
 
+      <!-- Opción individual -->
+      <router-link :to="{ name: 'llamados' }" class="opciones">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16">
+          <path fill="black" fill-rule="evenodd"
+            d="M8 1a1 1 0 0 0-1 1v.1A5 5 0 0 0 3 7v4l-1.205 1.328c-.583.643-.127 1.672.74 1.672h3.733a2 2 0 0 0 3.464 0h3.733c.867 0 1.323-1.03.74-1.672L13 11V7a5 5 0 0 0-4-4.9V2a1 1 0 0 0-1-1M4.5 11.58l-.39.428l-.446.492h8.672l-.447-.492l-.389-.429V7a3.5 3.5 0 1 0-7 0z"
+            clip-rule="evenodd" />
+        </svg>
+        <div class="enlace">Llamados</div>
+      </router-link>
 
       <!-- Opción individual -->
-      <router-link :to="{ name: 'instituciones' }" class="opciones">
+      <router-link :to="{ name: 'instituciones' }" class="opciones" v-rol="'1'">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <path
@@ -30,7 +39,7 @@
       </router-link>
 
       <!-- Opción individual -->
-      <router-link :to="{ name: 'personal' }" class="opciones">
+      <router-link :to="{ name: 'personal' }" class="opciones" v-rol="'1'">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
             d="M4 22v-1c0-1.87 0-2.804.402-3.5A3 3 0 0 1 5.5 16.402C6.196 16 7.13 16 9 16l3 4l3-4c1.87 0 2.804 0 3.5.402a3 3 0 0 1 1.098 1.098C20 18.196 20 19.13 20 21v1M15.937 8l1.018-4.136C17.188 2.917 16.483 2 15.523 2H8.477c-.96 0-1.665.917-1.432 1.864L8.063 8m7.874 0v2c0 2.209-1.762 4-3.937 4s-3.937-1.791-3.937-4V8m7.874 0H8.063M12 4v2m1-1h-2" />
@@ -48,7 +57,7 @@
       </router-link>
 
       <!-- Opción Usuarios con Acordeón -->
-      <div class="opciones" @click="toggleDropdown">
+      <div class="opciones opcion-usuario" @click="toggleDropdown" v-rol="'1'">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
             <circle cx="18" cy="15" r="3" />
@@ -63,8 +72,8 @@
       <!-- Acordeón de Usuarios -->
       <div v-if="dropdownVisible" class="dropdown">
         <router-link to="/usuarios" class="dropdown__item">Usuarios</router-link>
-        <div class="dropdown__item">Roles</div>
-        <div class="dropdown__item">Permisos</div>
+        <router-link to="/roles" class="dropdown__item">Roles</router-link>
+        <router-link to="/permisos" class="dropdown__item">Permisos</router-link>
       </div>
     </div>
 
@@ -149,6 +158,10 @@ a {
   border-radius: 5px;
 }
 
+.opcion-usuario{
+  cursor: pointer
+}
+
 svg {
   opacity: .5;
   margin-right: 3px;
@@ -162,11 +175,11 @@ svg {
   background-color: white;
 }
 
-.router-link-exact-active{
+.router-link-exact-active {
   background-color: #A1A1A1;
 }
 
-.router-link-exact-active .enlace{
+.router-link-exact-active .enlace {
   background-color: #A1A1A1;
   color: white;
   font-weight: 600;

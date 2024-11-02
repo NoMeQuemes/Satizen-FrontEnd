@@ -9,7 +9,7 @@
                 <div class="headerTable">
                     <h2>Lista de Instituciones</h2>
                     <div class="search-bar">
-                        <input type="text" placeholder="Buscar..." class="search-input" />
+                        <input v-model="terminoBusqueda" type="text" placeholder="Buscar..." class="search-input" />
                         <button class="icon-button">
                             <i class="fas fa-file-pdf"></i>
                         </button>
@@ -43,7 +43,7 @@
                             </tr>
                         </thead>
                         <tbody class="tableBody">
-                            <tr v-for="institucion in listaInstituciones" :key="institucion.idInstitucion">
+                            <tr v-for="institucion in listaInstitucionesFiltradas" :key="institucion.idInstitucion">
                                 <td>{{ institucion.idInstitucion }}</td>
                                 <td>{{ institucion.nombreInstitucion }}</td>
                                 <td>{{ institucion.direccionInstitucion }}</td>
@@ -97,19 +97,26 @@
 import SideBar from '@/components/SideBar.vue';
 import Encabezado from '@/components/Encabezado.vue';
 import Spinner from '@/components/Spinner.vue';
-import { ref, onMounted, reactive, nextTick } from 'vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import axiosFunction from '@/Functions/axios';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import CrearModal from '@/components/Instituciones/CrearModal.vue';
 import EditarModal from '@/components/Instituciones/EditarModal.vue';
 import EliminarModal from '@/components/Instituciones/EliminarModal.vue';
 
-let listaInstituciones = reactive([]);
+let listaInstituciones = ref([]);
 let IsLoading = ref(false);
 let modalCrearShow = ref(false);
 let modalShow = ref(false);
 let idInstitucion = ref(0)
+const terminoBusqueda = ref('');
 
+const listaInstitucionesFiltradas = computed(() => {
+    return listaInstituciones.value.filter(institucion => {
+        return institucion.nombreInstitucion.toLowerCase().includes(terminoBusqueda.value.toLowerCase()) ||
+            institucion.direccionInstitucion.toLowerCase().includes(terminoBusqueda.value.toLowerCase())
+  });
+});
 
 onMounted(() => {
     listarInstituciones();
@@ -120,7 +127,7 @@ function listarInstituciones() {
     IsLoading.value = true;
     axiosFunction.get("Institucion/ListarInstituciones")
         .then(resultado => {
-            listaInstituciones = resultado.data.resultado;
+            listaInstituciones.value = resultado.data.resultado;
             IsLoading.value = false;
         })
         .catch((error) => {

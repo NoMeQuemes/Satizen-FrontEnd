@@ -41,13 +41,25 @@
                                 </option>
                             </select>
                         </div>
-                        <div class="">
+                        <div class="col-md-6">
                             <label for="" class="form-label">Dni: </label>
                             <input type="number" class="form-control" v-model="paciente.dni">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Dirección: </label>
+                            <input type="text" class="form-control" v-model="paciente.direccionPaciente">
                         </div>
                         <div class="">
                             <label for="" class="form-label">N° Habitación: </label>
                             <input type="number" class="form-control" v-model="paciente.numeroHabitacionPaciente">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Celular: </label>
+                            <input type="number" class="form-control" v-model="paciente.celularPaciente">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="" class="form-label">Celular Acompañante: </label>
+                            <input type="number" class="form-control" v-model="paciente.celularAcompañante">
                         </div>
                         <div class="">
                             <label for="" class="form-label">Observación: </label>
@@ -72,13 +84,16 @@ import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 let paciente = reactive({
     idPaciente: 0,
-    idUsuario: 0,
     idInstitucion: 0,
+    idUsuario: 0,
     nombrePaciente: "",
     apellido: "",
     dni: 0,
     numeroHabitacionPaciente: 0,
-    observacionPaciente: ""
+    observacionPaciente: "",
+    direccionPaciente: "",
+    celularPaciente: 0,
+    celularAcompañante: null
 })
 let listaInstituciones = ref([]);
 let listaUsuarios = ref([]);
@@ -112,6 +127,8 @@ function identificarPaciente(id){
             paciente.dni = data.dni;
             paciente.numeroHabitacionPaciente = data.numeroHabitacionPaciente;
             paciente.observacionPaciente = data.observacionPaciente;
+            paciente.celularPaciente = data.celularPaciente;
+            paciente.celularAcompañante = data.celularAcompañante;
         })
         .catch((error) => {
             console.log(error)

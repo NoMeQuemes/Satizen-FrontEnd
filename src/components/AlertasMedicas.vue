@@ -4,54 +4,101 @@
     <div class="cards-container">
       <div class="card-wrapper" v-for="(alert, index) in alerts" :key="index">
         <!-- Aplicar color dinámico a outer-card y card -->
-        <div :class="['outer-card', alertLevelClass(alert.prioridadLlamado)]">
+        <div @click="asignarLlamado(alert.idLlamado)"  :class="['outer-card', alertLevelClass(alert.prioridadLlamado.toLowerCase())]">
           <div class="user-name">{{ alert.pacientes }}</div>
 
-          <div :class="['card', alertLevelClass(alert.prioridadLlamado)]">
+          <div :class="['card', alertLevelClass(alert.prioridadLlamado.toLowerCase())]">
             <div class="profile-pic"></div>
             <div class="card-content">
               <div class="card-details">
                 <div>
                   <span>Personal a cargo: </span>
-                  {{ alert.personals }}
+                  {{ alert.personals || "-"}}
                 </div>
                 <div>
                   <span>Dirección: </span>
-                  {{ alert.address }}
+                  {{ alert.direccion || "-"}}
                 </div>
                 <div>
                   <span>Celular:</span>
-                  {{ alert.phone }}
+                  {{ alert.celular || "-" }}
                 </div>
                 <div>
-                  <span>Diagnóstico:</span>
-                  {{ alert.diagnosis }}
+                  <span>Observación:</span> <!-- Antes era diagnostico-->
+                  {{ alert.observacion  || "-"}}
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
+      <div v-if="sinAlertas" class="sinAlertas"> No hay alertas en este momento</div>
     </div>
   </div>
+
+  <!-- Modales -->
+   <AsignarLlamadoModal v-if="modalCrearShow" :idLlamado="idLlamado" @actualizarLlamados="listarLlamados"></AsignarLlamadoModal>
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, nextTick } from 'vue';
 import axiosFunction from '@/Functions/axios';
+import * as signalR from '@microsoft/signalr';
+import AsignarLlamadoModal from './Llamados/AsignarLlamadoModal.vue';
+import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-const alerts = ref([])
+
+const alerts = ref([]);
+let connection;
+let modalCrearShow = ref(false);
+let idLlamado = ref(0);
+let sinAlertas = ref(false);
 
 onMounted(() => {
-  listarLlamados()
+  listarLlamados(),
+  initializeSignalR()
 })
 
 function listarLlamados() {
-  axiosFunction.get("Llamado/ListarLlamados")
+  axiosFunction.get("Llamado/ListarLlamadosNoAsignados")
     .then(resultado => {
-      console.log(resultado);
       alerts.value = resultado.data.resultado
+      alerts.value.reverse();
+      if(!alerts.value){
+        sinAlertas.value = true;
+      }
     })
+    .catch((err) => {
+      console.log(err)
+    })
+}
+
+function initializeSignalR() {
+  connection = new signalR.HubConnectionBuilder()
+    .withUrl('http://localhost:7298/alertaHub') // Aquí pones la URL del Hub en el backend
+    .withAutomaticReconnect() // Configura la reconexión automática en caso de desconexiones
+    .build();
+
+  connection.start()
+    .then(() => {
+      console.log('SignalR Connected.');
+      // Suscribirse al evento nuevoLlamado emitido por el servidor
+      connection.on('nuevoLlamado', (alert) => {
+        console.log('Nuevo llamado recibido:', alert);
+        listarLlamados();
+      });
+    })
+    .catch(err => console.error('SignalR Connection Error:', err));
+}
+
+function asignarLlamado(id) {
+  modalCrearShow.value = true;
+  idLlamado.value = id;
+  nextTick(() => {
+    const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
+    modal.show();
+  })
+  console.log("Id del llamado desde la vista: ", id)
 }
 
 // const alerts = ref([
@@ -103,6 +150,7 @@ const alertLevelClass = (prioridadLlamado) => {
   background-color: #ffffff;
   border-radius: 10px;
   max-height: 500px;
+  min-height: 368px;
   overflow-y: auto;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
   width: 90%;
@@ -136,6 +184,7 @@ const alertLevelClass = (prioridadLlamado) => {
   overflow: hidden;
   border: none;
   margin-bottom: 20px;
+  cursor: pointer;
 }
 
 .alerta-alta {

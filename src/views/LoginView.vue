@@ -33,11 +33,11 @@
                         </label>
                         <input type="password" name="" id="" class="form-control" v-model="usuario.password">
                     </div>
+                    <p class="enlace">¿Olvidaste tu contraseña? <router-link :to="`/restaurarContraseña`">Entrá aquí</router-link> </p>
                     <div class="cajitaBoton">
                         <button class="btn btn-success" @click.prevent="login()">Iniciar Sesión</button>
                     </div>
                 </form>
-                <!-- <p>¿No tienes una cuenta? Regístrate <router-link :to="`/register`">aquí</router-link> </p> -->
             </div>
 
             <!-- Logo -->
@@ -112,6 +112,11 @@ const login = () => {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.enlace{
+    font-size: 13px;
+    padding: 5px;
 }
 
 .cajaFormulario button {

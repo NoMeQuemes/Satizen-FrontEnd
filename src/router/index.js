@@ -6,7 +6,10 @@ import InstitucionesView from '@/views/InstitucionesView.vue'
 import UsuariosView from '@/views/UsuariosView.vue'
 import PersonalView from '@/views/PersonalView.vue'
 import PacientesView from '@/views/PacientesView.vue'
-
+import LlamadosView from '@/views/LlamadosView.vue'
+import RolesView from '@/views/RolesView.vue'
+import PermisosView from '@/views/PermisosView.vue'
+import RestaurarContraseñaView from '@/views/RestaurarContraseñaView.vue'
 
 // import TablaPacientes from '@/views/TablaPacientes.vue'
 import InicioView from '@/views/InicioView.vue' 
@@ -78,6 +81,45 @@ const routes = [
     {
       requiresAuth: true,
       title: 'Satizen - Personal'
+    }
+  },
+  {
+    path: '/llamados',
+    name: 'llamados',
+    component: LlamadosView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Satizen - Llamados'
+    }
+  },
+  {
+    path: '/roles',
+    name: 'roles',
+    component: RolesView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Satizen - Roles'
+    }
+  },
+  {
+    path: '/permisos',
+    name: 'permisos',
+    component: PermisosView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Satizen - Permisos'
+    }
+  },
+  {
+    path: '/restaurarContraseña',
+    name: 'restaurarContraseña',
+    component: RestaurarContraseñaView,
+    meta:
+    {
+      title: 'Satizen - Restaurar Contraseña'
     }
   }
 ]

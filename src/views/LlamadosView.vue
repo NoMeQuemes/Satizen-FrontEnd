@@ -7,14 +7,17 @@
             <Encabezado></Encabezado>
             <section class="main-content">
                 <div class="headerTable">
-                    <h2>Lista de Pacientes</h2>
+                    <h2>Lista de Llamados</h2>
                     <div class="search-bar">
-                        <input type="text" placeholder="Buscar..." class="search-input" />
+                        <input v-model="terminoBusqueda" type="text" placeholder="Buscar..." class="search-input" />
                         <button class="icon-button">
                             <i class="fas fa-file-pdf"></i>
                         </button>
-                        <button @click="crearPaciente" class="icon-button">
-                            <i class="fas fa-user-plus"></i>
+                        <button @click="crearLlamado" class="icon-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                                <path fill="black"
+                                    d="M12 22q-.825 0-1.412-.587T10 20h4q0 .825-.587 1.413T12 22m-7-3q-.425 0-.712-.288T4 18t.288-.712T5 17h1v-7q0-2.075 1.25-3.687T10.5 4.2v-.7q0-.625.438-1.062T12 2t1.063.438T13.5 3.5v.7q.25.05.475.113t.425.187q.35.2.525.563t0 .737t-.537.538t-.738.012q-.55-.225-.9-.288T12 6q-1.65 0-2.825 1.175T8 10v7h8v-2q0-.5.313-.75T17 14t.688.25T18 15v2h1q.425 0 .713.288T20 18t-.288.713T19 19zm13-9h-2q-.425 0-.712-.288T15 9t.288-.712T16 8h2V6q0-.425.288-.712T19 5t.713.288T20 6v2h2q.425 0 .713.288T23 9t-.288.713T22 10h-2v2q0 .425-.288.713T19 13t-.712-.288T18 12zm-6 1.5" />
+                            </svg>
                         </button>
                     </div>
                 </div>
@@ -25,31 +28,25 @@
                         <thead class="encabezadoTabla">
                             <tr>
                                 <th>Id</th>
-                                <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Dni</th>
-                                <th>Dirección</th>
-                                <th>Celular</th>
-                                <th>Institución</th>
-                                <th>Usuario</th>
-                                <th>Fecha de Ingreso</th>
+                                <th>Paciente</th>
+                                <th>Personal</th>
+                                <th>Fecha</th>
+                                <!-- Pendiente - Atendido - Cancelado -->
+                                <th>Estado</th>
+                                <th>Prioridad</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="tableBody">
-                            <tr v-for="paciente in listaPacientes.value" :key="paciente.idPaciente">
-                                <td>{{ paciente.idPaciente }}</td>
-                                <td>{{ paciente.nombrePaciente }}</td>
-                                <td>{{ paciente.apellido }}</td>
-                                <td>{{ paciente.dni }}</td>
-                                <td>{{ paciente.direccionPaciente }}</td>
-                                <td>{{ paciente.celularPaciente }}</td>
-                                <td>{{ paciente.instituciones }}</td>
-                                <td>{{ paciente.usuarios }}</td>
-                                <td>{{ $formatDate(paciente.fechaIngreso) }}
-                                </td>
+                            <tr v-for="llamado in listaLlamadosFiltradas" :key="llamado.idLlamados">
+                                <td>{{ llamado.idLlamado }}</td>
+                                <td>{{ llamado.pacientes }}</td>
+                                <td>{{ llamado.personals || "-" }}</td>
+                                <td>{{ $formatDate(llamado.fechaHoraLlamado) }}</td>
+                                <td>{{ llamado.estadoLlamado }}</td>
+                                <td>{{ llamado.prioridadLlamado }}</td>
                                 <td>
-                                    <button @click="editarPaciente(paciente.idPaciente)" class="edit-button">
+                                    <button @click="editarLlamado(llamado.idLlamado)" class="edit-button">
                                         <!-- Botón de editar -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24">
@@ -60,7 +57,7 @@
                                                 d="M19.641 17.16a44.4 44.4 0 0 0 .261-7.04a.4.4 0 0 1 .117-.3l.984-.984a.198.198 0 0 1 .338.127a46 46 0 0 1-.21 8.372c-.236 2.022-1.86 3.607-3.873 3.832a47.8 47.8 0 0 1-10.516 0c-2.012-.225-3.637-1.81-3.873-3.832a46 46 0 0 1 0-10.67c.236-2.022 1.86-3.607 3.873-3.832a48 48 0 0 1 7.989-.213a.2.2 0 0 1 .128.34l-.993.992a.4.4 0 0 1-.297.117a46 46 0 0 0-6.66.255a2.89 2.89 0 0 0-2.55 2.516a44.4 44.4 0 0 0 0 10.32a2.89 2.89 0 0 0 2.55 2.516c3.355.375 6.827.375 10.183 0a2.89 2.89 0 0 0 2.55-2.516" />
                                         </svg>
                                     </button>
-                                    <button @click="eliminarPaciente(paciente.idPaciente)" class="delete-button">
+                                    <button @click="eliminarLlamado(llamado.idLlamado)" class="delete-button">
                                         <!-- Botón de eliminar -->
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24">
@@ -82,48 +79,57 @@
     </div>
 
     <!-- Modales -->
-    <CrearModal v-if="modalCrearShow" @actualizarPacientes="listarPacientes"></CrearModal>
-    <EditarModal v-if="modalEditarShow" :idPaciente="idPaciente" @actualizarPacientes="listarPacientes"></EditarModal>
-    <EliminarModal v-if="modalEliminarShow" @actualizarPaciente="listarPacientes" :idPaciente="idPaciente"></EliminarModal>
+    <CrearModal v-if="modalCrearShow" @actualizarLlamados="listarLlamados"></CrearModal>
+    <EditarModal v-if="modalEditarShow" :idLlamado="idLlamado" @actualizarLlamados="listarLlamados"></EditarModal>
+    <EliminarModal v-if="modalELiminarShow" :idLlamado="idLlamado" @actualizarLlamado="listarLlamados"></EliminarModal>
+
 </template>
 
 <script setup>
 import SideBar from '@/components/SideBar.vue';
 import Encabezado from '@/components/Encabezado.vue';
 import axiosFunction from '@/Functions/axios';
-import { reactive, ref, onMounted, nextTick } from 'vue';
-import Spinner from '@/components/Spinner.vue';
-import CrearModal from '@/components/Pacientes/CrearModal.vue';
+import { ref, onMounted, nextTick, computed } from 'vue';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import EditarModal from '@/components/Pacientes/EditarModal.vue';
-import EliminarModal from '@/components/Pacientes/EliminarModal.vue';
+import CrearModal from '@/components/Llamados/CrearModal.vue';
+import Spinner from '@/components/Spinner.vue';
+import EditarModal from '@/components/Llamados/EditarModal.vue';
+import EliminarModal from '@/components/Llamados/EliminarModal.vue';
 
-
-let listaPacientes = reactive([]);
 let IsLoading = ref(false);
+let listaLlamados = ref([]);
 let modalCrearShow = ref(false);
-let modalEditarShow = ref(false);
-let idPaciente = ref(0);
-let modalEliminarShow = ref(false);
+let modalEditarShow = ref(false)
+let idLlamado = ref(0);
+const terminoBusqueda = ref('');
+let modalELiminarShow = ref(false);
+
+const listaLlamadosFiltradas = computed(() => {
+    return listaLlamados.value.filter(llamado => {
+        return llamado.pacientes.toLowerCase().includes(terminoBusqueda.value.toLowerCase()) ||
+        llamado.estadoLlamado.toLowerCase().includes(terminoBusqueda.value.toLowerCase()) ||
+        llamado.fechaHoraLlamado.toLowerCase().includes(terminoBusqueda.value.toLowerCase())
+  });
+});
 
 onMounted(() => {
-    listarPacientes()
+    listarLlamados()
 })
 
-function listarPacientes() {
+function listarLlamados() {
     IsLoading.value = true;
-    axiosFunction.get("Pacientes/ListarPacientes")
+    axiosFunction.get("Llamado/ListarLlamados")
         .then(resultado => {
-            listaPacientes.value = resultado.data.resultado;
             IsLoading.value = false;
+            listaLlamados.value = resultado.data.resultado
         })
         .catch((error) => {
-            console.log(error);
             IsLoading.value = false;
+            console.log(error)
         })
 }
 
-function crearPaciente() {
+function crearLlamado() {
     modalCrearShow.value = true;
     nextTick(() => {
         const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
@@ -131,18 +137,19 @@ function crearPaciente() {
     })
 }
 
-function editarPaciente(id) {
+function editarLlamado(id){
     modalEditarShow.value = true;
-    idPaciente.value = id;
+    idLlamado.value = id;
     nextTick(() => {
         const modal = new bootstrap.Modal(document.getElementById("staticModalUpdate"));
         modal.show();
     })
+
 }
 
-function eliminarPaciente(id){
-    modalEliminarShow.value = true;
-    idPaciente.value = id;
+function eliminarLlamado(id){
+    modalELiminarShow.value = true;
+    idLlamado.value = id;
     nextTick(() => {
         const modal = new bootstrap.Modal(document.getElementById("staticModalDelete"));
         modal.show();
@@ -150,7 +157,6 @@ function eliminarPaciente(id){
 }
 
 </script>
-
 
 <style scoped>
 .contenedor {

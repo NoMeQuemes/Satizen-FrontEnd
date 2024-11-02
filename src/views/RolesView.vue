@@ -7,47 +7,37 @@
             <Encabezado></Encabezado>
             <section class="main-content">
                 <div class="headerTable">
-                    <h2>Lista de Pacientes</h2>
+                    <h2>Lista de Roles</h2>
                     <div class="search-bar">
                         <input type="text" placeholder="Buscar..." class="search-input" />
                         <button class="icon-button">
                             <i class="fas fa-file-pdf"></i>
                         </button>
-                        <button @click="crearPaciente" class="icon-button">
-                            <i class="fas fa-user-plus"></i>
+                        <button class="icon-button">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+                                <path fill="black"
+                                    d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10s10-4.477 10-10S17.523 2 12 2m5 11h-4v4h-2v-4H7v-2h4V7h2v4h4z" />
+                            </svg>
                         </button>
                     </div>
                 </div>
                 <div class="table-container">
-                    <Spinner :isLoading="IsLoading" :can-cancel="false" @update:isLoading="IsLoading = $event"
-                        class="local-spinner" />
-                    <table class="patient-table" v-if="!IsLoading">
+                    <!-- <Spinner :isLoading="IsLoading" :can-cancel="false" @update:isLoading="IsLoading = $event"
+                        class="local-spinner" /> -->
+                    <table class="patient-table">
                         <thead class="encabezadoTabla">
                             <tr>
                                 <th>Id</th>
                                 <th>Nombre</th>
-                                <th>Apellido</th>
-                                <th>Dni</th>
-                                <th>Dirección</th>
-                                <th>Celular</th>
-                                <th>Institución</th>
-                                <th>Usuario</th>
-                                <th>Fecha de Ingreso</th>
+                                <th>Descripción</th>
                                 <th>Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="tableBody">
-                            <tr v-for="paciente in listaPacientes.value" :key="paciente.idPaciente">
-                                <td>{{ paciente.idPaciente }}</td>
-                                <td>{{ paciente.nombrePaciente }}</td>
-                                <td>{{ paciente.apellido }}</td>
-                                <td>{{ paciente.dni }}</td>
-                                <td>{{ paciente.direccionPaciente }}</td>
-                                <td>{{ paciente.celularPaciente }}</td>
-                                <td>{{ paciente.instituciones }}</td>
-                                <td>{{ paciente.usuarios }}</td>
-                                <td>{{ $formatDate(paciente.fechaIngreso) }}
-                                </td>
+                            <tr v-for="rol in listaRoles" :key="rol.idRol">
+                                <td>{{ rol.idRol }}</td>
+                                <td>{{ rol.nombre }}</td>
+                                <td>{{ rol.descripcion }}</td>
                                 <td>
                                     <button @click="editarPaciente(paciente.idPaciente)" class="edit-button">
                                         <!-- Botón de editar -->
@@ -81,72 +71,29 @@
         </div>
     </div>
 
-    <!-- Modales -->
-    <CrearModal v-if="modalCrearShow" @actualizarPacientes="listarPacientes"></CrearModal>
-    <EditarModal v-if="modalEditarShow" :idPaciente="idPaciente" @actualizarPacientes="listarPacientes"></EditarModal>
-    <EliminarModal v-if="modalEliminarShow" @actualizarPaciente="listarPacientes" :idPaciente="idPaciente"></EliminarModal>
+    <!-- Modales -->    
 </template>
 
 <script setup>
 import SideBar from '@/components/SideBar.vue';
 import Encabezado from '@/components/Encabezado.vue';
 import axiosFunction from '@/Functions/axios';
-import { reactive, ref, onMounted, nextTick } from 'vue';
-import Spinner from '@/components/Spinner.vue';
-import CrearModal from '@/components/Pacientes/CrearModal.vue';
-import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
-import EditarModal from '@/components/Pacientes/EditarModal.vue';
-import EliminarModal from '@/components/Pacientes/EliminarModal.vue';
+import { ref, onMounted } from 'vue';
 
-
-let listaPacientes = reactive([]);
-let IsLoading = ref(false);
-let modalCrearShow = ref(false);
-let modalEditarShow = ref(false);
-let idPaciente = ref(0);
-let modalEliminarShow = ref(false);
+let listaRoles = ref([]);
 
 onMounted(() => {
-    listarPacientes()
+    listarRoles()
 })
 
-function listarPacientes() {
-    IsLoading.value = true;
-    axiosFunction.get("Pacientes/ListarPacientes")
+function listarRoles() {
+    axiosFunction.get("Roles/ListarRoles")
         .then(resultado => {
-            listaPacientes.value = resultado.data.resultado;
-            IsLoading.value = false;
+            listaRoles.value = resultado.data.resultado
         })
-        .catch((error) => {
-            console.log(error);
-            IsLoading.value = false;
+        .catch((err) => {
+            console.log(err)
         })
-}
-
-function crearPaciente() {
-    modalCrearShow.value = true;
-    nextTick(() => {
-        const modal = new bootstrap.Modal(document.getElementById("staticBackdrop"));
-        modal.show();
-    })
-}
-
-function editarPaciente(id) {
-    modalEditarShow.value = true;
-    idPaciente.value = id;
-    nextTick(() => {
-        const modal = new bootstrap.Modal(document.getElementById("staticModalUpdate"));
-        modal.show();
-    })
-}
-
-function eliminarPaciente(id){
-    modalEliminarShow.value = true;
-    idPaciente.value = id;
-    nextTick(() => {
-        const modal = new bootstrap.Modal(document.getElementById("staticModalDelete"));
-        modal.show();
-    })
 }
 
 </script>
