@@ -5,8 +5,8 @@ import router from "../router";
 
 
 const axiosFunction = axios.create({
-   baseURL: 'https://www.satizen.somee.com/api/'
-  // baseURL: "http://localhost:7298/api/",
+  //  baseURL: 'https://www.satizen.somee.com/api/'
+  baseURL: "http://localhost:7298/api/",  
 });
 
 // Este interceptor se ejecuta antes de que una solicitud salga del cliente.
@@ -42,6 +42,7 @@ axiosFunction.interceptors.response.use(
           refreshToken: localStorage.getItem("refreshToken")
         }
         const response = await axios.post("http://localhost:7298/api/Acceso/RefreshToken", credenciales
+          // const response = await axios.post("https://www.satizen.somee.com/api/Acceso/RefreshToken", credenciales
         );
         const newToken = response.data.token;
         const newRefreshToken = response.data.refreshToken;

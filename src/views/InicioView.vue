@@ -24,7 +24,7 @@
 import AlertasMedicas from '../components/AlertasMedicas.vue';
 import DashboardCards from '../components/DashboardCards.vue';
 import Sidebar from '../components/BarraLateral.vue'; // Importa la barra lateral
-import Header from '../components/Encabezado.vue'; // Importa el encabezado
+import Header from '../components/EncabezadoPrincipal.vue'; // Importa el encabezado
 
 export default {
   components: {

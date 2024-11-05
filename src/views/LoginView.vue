@@ -33,7 +33,8 @@
                         </label>
                         <input type="password" name="" id="" class="form-control" v-model="usuario.password">
                     </div>
-                    <p class="enlace">¿Olvidaste tu contraseña? <router-link :to="`/restaurarContraseña`">Entrá aquí</router-link> </p>
+                    <p class="enlace">¿Olvidaste tu contraseña? <router-link :to="`/restaurarPassword`">Entrá
+                            aquí</router-link> </p>
                     <div class="cajitaBoton">
                         <button class="btn btn-success" @click.prevent="login()">Iniciar Sesión</button>
                     </div>
@@ -53,15 +54,40 @@
 
 <script setup>
 import { useLoginStore } from '@/store/login';
-import { reactive } from 'vue';
+import { reactive, onMounted } from 'vue';
 import Spinner from '@/components/Spinner.vue';
+import { useRoute, useRouter } from 'vue-router';
+import { toast } from "vue3-toastify";
+
 
 const loginStore = useLoginStore();
+const route = useRoute();
+const router = useRouter();
 
 const usuario = reactive({
     nombreUsuario: "",
     password: ""
 });
+
+onMounted(() => {
+    if (route.query.toast === 'success') {
+        toast.success("Contraseña cambiada con exito", {
+            autoClose: 5000,
+            position: toast.POSITION.BOTTOM_RIGHT
+        })
+        setTimeout(() => {
+            router.replace({ query: { ...route.query, toast: undefined } });
+        }, 6000);
+    } else if (route.query.toast === 'error') {
+        toast.error("Error al cambiar la contraseña", {
+            autoClose: 5000,
+            position: toast.POSITION.BOTTOM_RIGHT,
+        });
+        setTimeout(() => {
+            router.replace({ query: { ...route.query, toast: undefined } });
+        }, 6000);
+    }
+})
 
 const login = () => {
     loginStore.login(usuario)
@@ -96,15 +122,15 @@ const login = () => {
     padding: 0 40px;
 }
 
-.form-label{
+.form-label {
     display: flex;
 }
 
-.form-label{
+.form-label {
     margin-top: 10px;
 }
 
-.form-label svg{
+.form-label svg {
     margin-right: 5px;
 }
 
@@ -114,7 +140,7 @@ const login = () => {
     justify-content: center;
 }
 
-.enlace{
+.enlace {
     font-size: 13px;
     padding: 5px;
 }

@@ -4,7 +4,7 @@
       <SideBar class="sideBar"></SideBar>
     </div>
     <div class="body">
-      <Encabezado></Encabezado>
+      <EncabezadoPrincipal></EncabezadoPrincipal>
       <section class="main-content">
         <div class="headerTable">
           <h2>Lista de Usuarios</h2>
@@ -38,6 +38,7 @@
                 <td>{{ usuario.idUsuario }}</td>
                 <td>{{ usuario.nombreUsuario }}</td>
                 <td>{{ usuario.correo || '-' }}</td>
+                <!-- <img style="width: 50px;" v-if="usuario.imagenPerfilUrl" :src="getImageUrl(usuario.imagenPerfilUrl)" alt="Imagen de perfil"> -->
                 <!-- <td>{{ obtenerNombreRol(usuario.idRoles) }}</td> -->
                 <td>{{ usuario.roles }}</td>
                 <td>{{ $formatDate(usuario.fechaCreacion) }}</td>
@@ -81,7 +82,7 @@
 </template>
 <script setup>
 import SideBar from '@/components/SideBar.vue';
-import Encabezado from '@/components/Encabezado.vue';
+import EncabezadoPrincipal from '@/components/EncabezadoPrincipal.vue';
 import { ref, reactive, onMounted, nextTick } from 'vue';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axiosFunction from '@/Functions/axios';
@@ -163,6 +164,11 @@ function crearUsuario() {
     modal.show();
   })
 }
+
+// function getImageUrl(imageUrl) {
+//   Si la URL es relativa, convierte a absoluta
+//   return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
+// }
 
 </script>
 

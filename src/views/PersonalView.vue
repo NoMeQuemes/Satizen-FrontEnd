@@ -4,7 +4,7 @@
             <SideBar class="sideBar"></SideBar>
         </div>
         <div class="body">
-            <Encabezado></Encabezado>
+            <EncabezadoPrincipal></EncabezadoPrincipal>
             <section class="main-content">
                 <div class="headerTable">
                     <h2>Lista de Personal</h2>
@@ -88,7 +88,7 @@
 
 <script setup>
 import SideBar from '@/components/SideBar.vue';
-import Encabezado from '@/components/Encabezado.vue';
+import EncabezadoPrincipal from '@/components/EncabezadoPrincipal.vue';
 import axiosFunction from '@/Functions/axios';
 import { onMounted, ref, nextTick } from 'vue';
 import Spinner from '@/components/Spinner.vue';

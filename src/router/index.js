@@ -9,7 +9,8 @@ import PacientesView from '@/views/PacientesView.vue'
 import LlamadosView from '@/views/LlamadosView.vue'
 import RolesView from '@/views/RolesView.vue'
 import PermisosView from '@/views/PermisosView.vue'
-import RestaurarContraseñaView from '@/views/RestaurarContraseñaView.vue'
+import RestaurarPasswordView from '@/views/RestaurarPasswordView.vue'
+import CambiarPasswordView from '@/views/CambiarPasswordView.vue'
 
 // import TablaPacientes from '@/views/TablaPacientes.vue'
 import InicioView from '@/views/InicioView.vue' 
@@ -114,12 +115,21 @@ const routes = [
     }
   },
   {
-    path: '/restaurarContraseña',
-    name: 'restaurarContraseña',
-    component: RestaurarContraseñaView,
+    path: '/restaurarPassword',
+    name: 'restaurarPassword',
+    component: RestaurarPasswordView,
     meta:
     {
       title: 'Satizen - Restaurar Contraseña'
+    }
+  },
+  {
+    path: '/cambiarPassword',
+    name: 'cambiarPassword',
+    component: CambiarPasswordView,
+    meta:
+    {
+      title: 'Satizen - Cambiar Contraseña'
     }
   }
 ]

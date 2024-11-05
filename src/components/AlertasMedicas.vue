@@ -4,20 +4,23 @@
     <div class="cards-container">
       <div class="card-wrapper" v-for="(alert, index) in alerts" :key="index">
         <!-- Aplicar color dinámico a outer-card y card -->
-        <div @click="asignarLlamado(alert.idLlamado)"  :class="['outer-card', alertLevelClass(alert.prioridadLlamado.toLowerCase())]">
-          <div class="user-name">{{ alert.pacientes }}</div>
+        <div @click="asignarLlamado(alert.idLlamado)"
+          :class="['outer-card', alertLevelClass(alert.prioridadLlamado.toLowerCase())]">
+          <div class="user-name">{{ alert.nombrePaciente }} {{ alert.apellidoPaciente }}</div>
 
           <div :class="['card', alertLevelClass(alert.prioridadLlamado.toLowerCase())]">
-            <div class="profile-pic"></div>
+            <!-- <div class="profile-pic"></div> -->
+            <img v-if="alert.imagenPerfilUrl" :src="getImageUrl(alert.imagenPerfilUrl)" alt="Imagen de perfil" class="profile-pic" />
+            <img v-if="!alert.imagenPerfilUrl" src="../assets/usuario.png" class="profile-pic">
             <div class="card-content">
               <div class="card-details">
                 <div>
                   <span>Personal a cargo: </span>
-                  {{ alert.personals || "-"}}
+                  {{ alert.personals || "-" }}
                 </div>
                 <div>
                   <span>Dirección: </span>
-                  {{ alert.direccion || "-"}}
+                  {{ alert.direccion || "-" }}
                 </div>
                 <div>
                   <span>Celular:</span>
@@ -25,7 +28,7 @@
                 </div>
                 <div>
                   <span>Observación:</span> <!-- Antes era diagnostico-->
-                  {{ alert.observacion  || "-"}}
+                  {{ alert.observacionLlamado || "-" }}
                 </div>
               </div>
             </div>
@@ -37,7 +40,8 @@
   </div>
 
   <!-- Modales -->
-   <AsignarLlamadoModal v-if="modalCrearShow" :idLlamado="idLlamado" @actualizarLlamados="listarLlamados"></AsignarLlamadoModal>
+  <AsignarLlamadoModal v-if="modalCrearShow" :idLlamado="idLlamado" @actualizarLlamados="listarLlamados">
+  </AsignarLlamadoModal>
 </template>
 
 <script setup>
@@ -56,7 +60,7 @@ let sinAlertas = ref(false);
 
 onMounted(() => {
   listarLlamados(),
-  initializeSignalR()
+    initializeSignalR()
 })
 
 function listarLlamados() {
@@ -64,9 +68,10 @@ function listarLlamados() {
     .then(resultado => {
       alerts.value = resultado.data.resultado
       alerts.value.reverse();
-      if(!alerts.value){
+      if (!alerts.value) {
         sinAlertas.value = true;
       }
+      console.log("Llamados de el principio: ", alerts.value);
     })
     .catch((err) => {
       console.log(err)
@@ -76,6 +81,7 @@ function listarLlamados() {
 function initializeSignalR() {
   connection = new signalR.HubConnectionBuilder()
     .withUrl('http://localhost:7298/alertaHub') // Aquí pones la URL del Hub en el backend
+    // .withUrl('https://satizen.somee.com/alertaHub') // Aquí pones la URL del Hub en el backend
     .withAutomaticReconnect() // Configura la reconexión automática en caso de desconexiones
     .build();
 
@@ -99,6 +105,11 @@ function asignarLlamado(id) {
     modal.show();
   })
   console.log("Id del llamado desde la vista: ", id)
+}
+
+function getImageUrl(imageUrl) {
+  // Si la URL es relativa, convierte a absoluta
+  return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
 }
 
 // const alerts = ref([

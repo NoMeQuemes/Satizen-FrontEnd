@@ -14,6 +14,7 @@ export const useLogoutStore = defineStore("logout", () => {
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
         localStorage.removeItem("satizenInfo");
+        localStorage.removeItem("image");
         delete decodeJwt.dataUser.idUsuario, decodeJwt.dataUser.nombreUsuario, decodeJwt.dataUser.rolUsuario, decodeJwt.dataUser.expToken;
         expirationSession.stopCountDownExpirationSession();
         router.push({ name: 'login' })

@@ -10,7 +10,7 @@
                         aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form @submit.prevent="uploadImage">
                         <div class="">
                             <label class="form-label">Nombre de usuario: </label>
                             <input type="text" class="form-control" v-model="usuario.nombreUsuario" autocomplete="of">
@@ -22,6 +22,10 @@
                         <div class="">
                             <label for="" class="form-label">Contraseña: </label>
                             <input type="password" class="form-control" v-model="usuario.password" autocomplete="of">
+                        </div>
+                        <div class="">
+                            <label class="form-label">Imágen de perfil: </label>
+                            <input class="form-control" type="file" @change="handleFileUpload">
                         </div>
                         <div class="select">
                             <label class="form-label">Roles:</label>
@@ -57,6 +61,7 @@ let usuario = reactive({
     nombreUsuario: "",
     correo: "",
     password: "",
+    imagenPefil: null,
     idRoles: 0
 });
 
@@ -64,13 +69,26 @@ onMounted(() => {
     listarRoles()
 })
 
+const handleFileUpload = (event) => {
+    usuario.imagenPefil = event.target.files[0];
+};
+
 function crearUsuario() {
+
+    const formData = new FormData();
+    formData.append('nombreUsuario', usuario.nombreUsuario);
+    formData.append('correo', usuario.correo);
+    formData.append('password', usuario.password);
+    formData.append('idRoles', usuario.idRoles);
+    if (usuario.imagenPefil) {
+        formData.append('imagenPefil', usuario.imagenPefil);
+    }
+
     const modal = bootstrap.Modal.getInstance(document.getElementById('staticBackdrop'));
     modal.hide();
-    const token = localStorage.getItem("token");
     axiosFunction.post("Acceso/RegistrarUsuario", usuario, {
-        Headers: {
-            Authorization: `Bearer ${token}`
+        headers: {
+            'Content-Type': 'multipart/form-data',
         }
     })
         .then(() => {
