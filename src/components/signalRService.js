@@ -2,12 +2,11 @@ import * as signalR from '@microsoft/signalr';
 
 // Crea una instancia de la conexión SignalR
 const connection = new signalR.HubConnectionBuilder()
-  .withUrl('https://localhost:7298/chatHub') // Reemplaza con la URL de tu hub SignalR
+  .withUrl('https://localhost:7298/chatHub') 
   .configureLogging(signalR.LogLevel.Information)
   .build();
   
 
-// Función para iniciar la conexión
 const startConnection = async () => {
   if (connection.state === signalR.HubConnectionState.Disconnected) {
     try {
@@ -33,14 +32,14 @@ const joinGroup = async (idAutor, idReceptor) => {
 };
 
  
-const leaveGroup = async (idAutor, idReceptor) => {
-  try {
-    await connection.invoke('LeaveGroup', idAutor, idReceptor);
-    console.log(`Salido del grupo ${idAutor}-${idReceptor}`);
-  } catch (error) {
-    console.error('Error al salir del grupo:', error);
-  }
-};
+  const leaveGroup = async (idAutor, idReceptor) => {
+    try {
+      await connection.invoke('LeaveGroup', idAutor, idReceptor);
+      console.log(`Salido del grupo ${idAutor}-${idReceptor}`);
+    } catch (error) {
+      console.error('Error al salir del grupo:', error);
+    }
+  };
 
-// Exporta la conexión y las funciones
-export { connection, startConnection, joinGroup, leaveGroup };
+
+export { connection, startConnection, joinGroup, leaveGroup  };
