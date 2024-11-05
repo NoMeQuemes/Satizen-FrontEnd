@@ -5,6 +5,7 @@ import RegisterView from '@/views/RegisterView.vue'
 import InstitucionesView from '@/views/InstitucionesView.vue'
 import UsuariosView from '@/views/UsuariosView.vue'
 import PersonalView from '@/views/PersonalView.vue'
+import DispositivosView from '@/views/DispositivosView.vue'
 import PacientesView from '@/views/PacientesView.vue'
 import LlamadosView from '@/views/LlamadosView.vue'
 import RolesView from '@/views/RolesView.vue'
@@ -81,6 +82,16 @@ const routes = [
     {
       requiresAuth: true,
       title: 'Satizen - Personal'
+    }
+  },
+  {
+    path: '/dispositivo',
+    name: 'dispositivo',
+    component: DispositivosView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Satizen - Dispositivos'
     }
   },
   {
