@@ -114,7 +114,7 @@ function crearUsuario() {
         .catch((error) => {
             limpiarArreglo();
             console.log(error);
-            toast.error("Error", {
+            toast.error(`${error.response.data.errorMessages}`, {
                 autoClose: 5000,
                 position: toast.POSITION.BOTTOM_RIGHT
             })

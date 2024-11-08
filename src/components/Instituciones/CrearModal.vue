@@ -13,23 +13,23 @@
                     <form>
                         <div class="">
                             <label class="form-label">Nombre de institución: </label>
-                            <input type="text" class="form-control" v-model="institucion.nombreInstitucion">
+                            <input type="text" class="form-control" v-model="institucion.nombreInstitucion" required>
                         </div>
                         <div class="">
                             <label for="" class="form-label">Dirección: </label>
-                            <input type="text" class="form-control" v-model="institucion.direccionInstitucion">
+                            <input type="text" class="form-control" v-model="institucion.direccionInstitucion" required>
                         </div>
                         <div class="">
                             <label for="" class="form-label">Teléfono: </label>
-                            <input type="number" class="form-control" v-model="institucion.telefonoInstitucion">
+                            <input type="number" class="form-control" v-model="institucion.telefonoInstitucion" required>
                         </div>
                         <div class="">
                             <label for="" class="form-label">Correo: </label>
-                            <input type="email" class="form-control" v-model="institucion.correoInstitucion">
+                            <input type="email" class="form-control" v-model="institucion.correoInstitucion" required>
                         </div>
                         <div class="">
                             <label for="" class="form-label">Celular: </label>
-                            <input type="number" class="form-control" v-model="institucion.celularInstitucion">
+                            <input type="number" class="form-control" v-model="institucion.celularInstitucion" value="null" required>
                         </div>
                     </form>
                 </div>
@@ -50,11 +50,11 @@ import { toast } from 'vue3-toastify'
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
 let institucion = reactive({
-    nombreInstitucion: "",
-    direccionInstitucion: "",
-    telefonoInstitucion: 0,
-    correoInstitucion: "",
-    celularInstitucion: 0
+    nombreInstitucion: null,
+    direccionInstitucion: null,
+    telefonoInstitucion: null,
+    correoInstitucion: null,
+    celularInstitucion: null
 
 });
 
@@ -76,7 +76,7 @@ function crearInstitucion() {
         .catch((error) => {
             limpiarArreglo();
             console.log(error);
-            toast.danger("Error", {
+            toast.error("Error", {
                 autoClose: 5000,
                 position: toast.POSITION.BOTTOM_RIGHT
             })

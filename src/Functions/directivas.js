@@ -5,8 +5,12 @@ export const roleDirective = {
         // const decodeJwtStore = useDecodeJwT();
         const rolusuario = JSON.parse(localStorage.getItem("satizenInfo"))
         const requiredRol = binding.value;
-        if ( rolusuario !== requiredRol){
-            el.style.display = 'none' //Oculta el elemento si el usuario no tiene el rol adecuado
+        // if ( rolusuario !== requiredRol){
+        //     el.style.display = 'none' //Oculta el elemento si el usuario no tiene el rol adecuado
+        // }
+
+        if (!requiredRol.includes(rolusuario)) {
+            el.style.display = 'none'; // Oculta el elemento si el usuario no tiene el rol adecuado
         }
     }
 }

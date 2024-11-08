@@ -87,7 +87,7 @@ onMounted(() => {
 })
 
 function listarAcciones() {
-    axiosFunction.get("http://localhost:7298/api/Acciones/ListarAcciones")
+    axiosFunction.get("https://www.satizen.somee.com/api/Acciones/ListarAcciones")
         .then(resultado => {
             listaAcciones.value = resultado.data.resultado
         })

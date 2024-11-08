@@ -11,6 +11,7 @@ import RolesView from '@/views/RolesView.vue'
 import PermisosView from '@/views/PermisosView.vue'
 import RestaurarPasswordView from '@/views/RestaurarPasswordView.vue'
 import CambiarPasswordView from '@/views/CambiarPasswordView.vue'
+import DispositivosView from '@/views/DispositivosView.vue'
 
 // import TablaPacientes from '@/views/TablaPacientes.vue'
 import InicioView from '@/views/InicioView.vue' 
@@ -131,7 +132,17 @@ const routes = [
     {
       title: 'Satizen - Cambiar Contraseña'
     }
-  }
+  },
+  {
+    path: '/dispositivo',
+    name: 'dispositivo',
+    component: DispositivosView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Satizen - Dispositivos'
+    }
+  },
 ]
 
 const router = createRouter({

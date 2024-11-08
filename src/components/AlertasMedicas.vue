@@ -80,8 +80,8 @@ function listarLlamados() {
 
 function initializeSignalR() {
   connection = new signalR.HubConnectionBuilder()
-    .withUrl('http://localhost:7298/alertaHub') // Aquí pones la URL del Hub en el backend
-    // .withUrl('https://satizen.somee.com/alertaHub') // Aquí pones la URL del Hub en el backend
+    // .withUrl('http://localhost:7298/alertaHub') // Aquí pones la URL del Hub en el backend
+    .withUrl('https://satizen.somee.com/alertaHub') // Aquí pones la URL del Hub en el backend
     .withAutomaticReconnect() // Configura la reconexión automática en caso de desconexiones
     .build();
 
@@ -109,7 +109,9 @@ function asignarLlamado(id) {
 
 function getImageUrl(imageUrl) {
   // Si la URL es relativa, convierte a absoluta
-  return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
+  // return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
+  return `https://www.satizen.somee.com/${imageUrl}`
+
 }
 
 // const alerts = ref([

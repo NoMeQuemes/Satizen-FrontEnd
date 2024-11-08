@@ -9,7 +9,7 @@
         <div class="headerTable">
           <h2>Lista de Usuarios</h2>
           <div class="search-bar">
-            <input type="text" placeholder="Buscar..." class="search-input" />
+            <input v-model="terminoBusqueda" type="text" placeholder="Buscar por nombre o correo..." class="search-input" />
             <button class="icon-button">
               <i class="fas fa-file-pdf"></i>
             </button>
@@ -34,7 +34,7 @@
               </tr>
             </thead>
             <tbody class="tableBody">
-              <tr v-for="usuario in listaUsuarios.value" :key="usuario.idUsuario">
+              <tr v-for="usuario in listaUsuariosFiltradas" :key="usuario.idUsuario">
                 <td>{{ usuario.idUsuario }}</td>
                 <td>{{ usuario.nombreUsuario }}</td>
                 <td>{{ usuario.correo || '-' }}</td>
@@ -83,7 +83,7 @@
 <script setup>
 import SideBar from '@/components/SideBar.vue';
 import EncabezadoPrincipal from '@/components/EncabezadoPrincipal.vue';
-import { ref, reactive, onMounted, nextTick } from 'vue';
+import { ref, reactive, onMounted, nextTick, computed } from 'vue';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import axiosFunction from '@/Functions/axios';
 import Spinner from '@/components/Spinner.vue';
@@ -91,12 +91,20 @@ import EliminarModal from '@/components/Usuarios/EliminarModal.vue';
 import EditarModal from '@/components/Usuarios/EditarModal.vue';
 import CrearModal from '@/components/Usuarios/CrearModal.vue';
 
-let listaUsuarios = reactive([]);
+let listaUsuarios = ref([]);
 let roles = reactive([]);
 let IsLoading = ref(false);
 let idUsuario = ref(0);
 let modalShow = ref(false);
 let modalCrearShow = ref(false);
+const terminoBusqueda = ref('');
+
+const listaUsuariosFiltradas = computed(() => {
+    return listaUsuarios.value.filter(usuarios => {
+        return usuarios.nombreUsuario.toLowerCase().includes(terminoBusqueda.value.toLowerCase()) ||
+            usuarios.correo.toLowerCase().includes(terminoBusqueda.value.toLowerCase())
+  });
+});
 
 onMounted(() => {
   listarUsuarios();

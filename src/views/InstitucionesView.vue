@@ -9,7 +9,7 @@
                 <div class="headerTable">
                     <h2>Lista de Instituciones</h2>
                     <div class="search-bar">
-                        <input v-model="terminoBusqueda" type="text" placeholder="Buscar..." class="search-input" />
+                        <input v-model="terminoBusqueda" type="text" placeholder="Buscar por nombre o institución..." class="search-input" />
                         <button class="icon-button">
                             <i class="fas fa-file-pdf"></i>
                         </button>
@@ -44,6 +44,7 @@
                         </thead>
                         <tbody class="tableBody">
                             <tr v-for="institucion in listaInstitucionesFiltradas" :key="institucion.idInstitucion">
+                                <td>{{ institucion.idInstitucion }}</td>
                                 <td>{{ institucion.idInstitucion }}</td>
                                 <td>{{ institucion.nombreInstitucion }}</td>
                                 <td>{{ institucion.direccionInstitucion }}</td>

@@ -17,7 +17,7 @@
       </router-link>
 
       <!-- Opción individual -->
-      <router-link :to="{ name: 'llamados' }" class="opciones">
+      <router-link :to="{ name: 'llamados' }" class="opciones" v-rol="['1', '2', '3']">
         <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 16 16">
           <path fill="black" fill-rule="evenodd"
             d="M8 1a1 1 0 0 0-1 1v.1A5 5 0 0 0 3 7v4l-1.205 1.328c-.583.643-.127 1.672.74 1.672h3.733a2 2 0 0 0 3.464 0h3.733c.867 0 1.323-1.03.74-1.672L13 11V7a5 5 0 0 0-4-4.9V2a1 1 0 0 0-1-1M4.5 11.58l-.39.428l-.446.492h8.672l-.447-.492l-.389-.429V7a3.5 3.5 0 1 0-7 0z"
@@ -47,8 +47,17 @@
         <div class="enlace">Personal</div>
       </router-link>
 
+
+      <router-link :to="{ name: 'dispositivo' }" class="opciones" v-rol="'1'">
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+          <path fill="none" stroke="black" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+            d="M16.286 3H7.714C6.768 3 6 3.806 6 4.8v14.4c0 .994.768 1.8 1.714 1.8h8.572c.947 0 1.714-.806 1.714-1.8V4.8c0-.994-.767-1.8-1.714-1.8M10.5 6h3" />
+        </svg>
+        <div class="enlace">Dispositivo</div>
+      </router-link>
+
       <!-- Opción individual -->
-      <router-link :to="{ name: 'pacientes' }" class="opciones">
+      <router-link :to="{ name: 'pacientes' }" class="opciones" v-rol="['1', '2', '3']">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <path fill="currentColor"
             d="M12 10c2.21 0 4-1.79 4-4s-1.79-4-4-4s-4 1.79-4 4s1.79 4 4 4m0-6c1.1 0 2 .9 2 2s-.9 2-2 2s-2-.9-2-2s.9-2 2-2m6.39 8.56C16.71 11.7 14.53 11 12 11s-4.71.7-6.39 1.56A2.97 2.97 0 0 0 4 15.22V22h2v-6.78c0-.38.2-.72.5-.88C7.71 13.73 9.63 13 12 13c.76 0 1.47.07 2.13.2l-1.55 3.3H9.75C8.23 16.5 7 17.73 7 19.25S8.23 22 9.75 22H18c1.1 0 2-.9 2-2v-4.78c0-1.12-.61-2.15-1.61-2.66M10.94 20H9.75c-.41 0-.75-.34-.75-.75s.34-.75.75-.75h1.89zM18 20h-4.85l2.94-6.27c.54.2 1.01.41 1.41.61c.3.16.5.5.5.88z" />
@@ -56,7 +65,7 @@
         <div class="enlace">Pacientes</div>
       </router-link>
 
-      <!-- Opción Usuarios con Acordeón -->
+      <!-- Opción Usuarios con Acordeón  -->
       <div class="opciones opcion-usuario" @click="toggleDropdown" v-rol="'1'">
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
           <g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2">
@@ -158,7 +167,7 @@ a {
   border-radius: 5px;
 }
 
-.opcion-usuario{
+.opcion-usuario {
   cursor: pointer
 }
 

@@ -5,14 +5,12 @@ import { useRouter } from "vue-router";
 import { useDecodeJwT } from "./decodeJwt";
 import { ref } from "vue";
 import { toast } from "vue3-toastify";
-import { useListarUsuario } from "./listarUsuario";
 
 export const useLoginStore = defineStore("login", () => {
   const decodeJwtStore = useDecodeJwT();
   // const expirationSession = useExpirationSession();
   const router = useRouter();
   let IsLoading = ref(false);
-  const listarUsuarioStore = useListarUsuario();
 
   function login(usuario) {
     IsLoading.value = true;
@@ -30,7 +28,6 @@ export const useLoginStore = defineStore("login", () => {
         decodeJwtStore.decodeJwt();
         // expirationSession.expirationSession();
         IsLoading.value = false;
-        listarUsuarioStore.imagenPerfil(); //Esto trae la url de la imagen de perfil
         router.push({ name: "home", query: { toast: 'success' } });
       })
       .catch((error) => {

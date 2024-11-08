@@ -8,15 +8,7 @@
 <script setup>
 // import SessionWarningModal from './components/SessionWarningModal.vue';
 // import { useExpirationSession } from './store/expirationSession';
-import { useListarUsuario } from './store/listarUsuario';
-import { onMounted } from 'vue';
 
-// const expirationSession = useExpirationSession();
-const listarUsuarioStore = useListarUsuario()
-
-onMounted(() => {
-  listarUsuarioStore.imagenPerfil();
-})
 
 </script>
 

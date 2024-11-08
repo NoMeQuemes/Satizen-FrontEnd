@@ -9,7 +9,7 @@
                 <div class="headerTable">
                     <h2>Lista de Pacientes</h2>
                     <div class="search-bar">
-                        <input type="text" placeholder="Buscar..." class="search-input" />
+                        <input v-model="terminoBusqueda" type="text" placeholder="Buscar..." class="search-input" />
                         <button class="icon-button">
                             <i class="fas fa-file-pdf"></i>
                         </button>

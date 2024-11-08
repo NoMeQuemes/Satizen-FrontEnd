@@ -22,7 +22,9 @@ export const useDecodeJwT = defineStore("decodeJwt", () => {
             dataUser.expToken = tokenDecoded.exp;
         }
         
+        //Cualquier dato que se agregue al local storage se debe eliminar al momento de hacer logout
         localStorage.setItem('satizenInfo', JSON.stringify(dataUser.rolUsuario));
+        localStorage.setItem('dataUser', JSON.stringify(dataUser));
     }
 
     return{

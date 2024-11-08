@@ -1,17 +1,29 @@
 <template>
   <header class="top-bar">
     <div class="top-bar-container">
-      <div class="menu-button">
+      <!-- <div class="menu-button">
         <i class="fas fa-bars"></i>
+      </div> -->
+      <div class="nombreUsuario">
+        <p>¡Hola, <b>{{ usuario.nombreUsuario }}</b>!</p>
       </div>
       <div class="search-bar">
-        <input type="text" placeholder="Buscar..." class="search-input" />
-        <i class="fas fa-search search-icon"></i>
+        <!-- <input type="text" placeholder="Buscar..." class="search-input" /> -->
+        <!-- <i class="fas fa-search search-icon"></i> -->
       </div>
       <div class="profile-section">
-        <i class="fas fa-bell"></i>
+        <!-- Icono de notificaciones -->
+        <svg style="margin-right: 10px;" xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24">
+          <path fill="black" d="M8.645 20.5a3.502 3.502 0 0 0 6.71 0zM3 19.5h18v-3l-2-3v-5a7 7 0 1 0-14 0v5l-2 3z" />
+        </svg>
+        <!-- Icono de mensaje -->
+        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 20 20">
+          <path fill="black" d="M0 8v8a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V8l-10 4z" />
+          <path fill="black" d="M2 2a2 2 0 0 0-2 2v2l10 4l10-4V4a2 2 0 0 0-2-2z" />
+        </svg>
         <div class="profile-pic">
-          <img v-if="usuario.imagenPerfilUrl" :src="getImageUrl(usuario.imagenPerfilUrl)" alt="Imagen de perfil" class="profile-img" />
+          <img v-if="usuario.imagenPerfilUrl" :src="getImageUrl(usuario.imagenPerfilUrl)" alt="Imagen de perfil"
+            class="profile-img" />
           <img v-if="!usuario.imagenPerfilUrl" src="../assets/usuario.png" class="profile-img">
           <!-- <img  src="../assets/usuario.png" class="profile-img"> -->
           <!-- <img > -->
@@ -23,21 +35,21 @@
 
 <script setup>
 import axiosFunction from '@/Functions/axios';
-import { ref, onMounted } from 'vue';
+import { reactive, onMounted } from 'vue';
 import { useDecodeJwT } from '@/store/decodeJwt';
 
 
-let usuario = ref([]);
+let usuario = reactive(JSON.parse(localStorage.getItem('dataUser')));
 const decodeJwtStore = useDecodeJwT();
 
 onMounted(() => {
   traerUsuario()
 })
 
-function traerUsuario(){
+function traerUsuario() {
   axiosFunction.get(`Usuarios/ListarPorId/${decodeJwtStore.dataUser.idUsuario}`)
     .then(resultado => {
-      console.log("Resultado de traer al usuario: ",resultado);
+      console.log("Resultado de traer al usuario: ", resultado);
       usuario.value = resultado.data.resultado;
       console.log("Arreglo de el usuario: ", usuario.value);
     })
@@ -48,7 +60,8 @@ function traerUsuario(){
 
 function getImageUrl(imageUrl) {
   // Si la URL es relativa, convierte a absoluta
-  return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
+  // return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
+  return `https://www.satizen.somee.com/${imageUrl}`
 }
 
 
@@ -88,6 +101,11 @@ function getImageUrl(imageUrl) {
   cursor: pointer;
 }
 
+.nombreUsuario {
+  margin-top: 10px;
+  margin-left: 20px;
+}
+
 .search-bar {
   position: relative;
   display: flex;
@@ -125,6 +143,7 @@ function getImageUrl(imageUrl) {
 
 .profile-pic {
   margin-left: 20px;
+  margin-right: 20px;
 }
 
 .profile-img {
@@ -133,4 +152,9 @@ function getImageUrl(imageUrl) {
   border-radius: 50%;
   object-fit: cover;
 }
+
+svg{
+  opacity: .5;
+}
+
 </style>
