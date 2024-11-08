@@ -31,7 +31,7 @@ export default {
 }
 
 .main-content {
-  flex-grow: 1;
+  flex-grow: 2;
   display: flex;
   flex-direction: column;
   height: 100vh;
