@@ -28,6 +28,7 @@
                 <th>Usuario</th>
                 <th>Correo</th>
                 <th>Rol</th>
+                <!-- <th>Celular</th> -->
                 <th>Fecha de Creación</th>
                 <th>Fecha de Actualización</th>
                 <th>Acciones</th>
@@ -41,6 +42,7 @@
                 <!-- <img style="width: 50px;" v-if="usuario.imagenPerfilUrl" :src="getImageUrl(usuario.imagenPerfilUrl)" alt="Imagen de perfil"> -->
                 <!-- <td>{{ obtenerNombreRol(usuario.idRoles) }}</td> -->
                 <td>{{ usuario.roles }}</td>
+                <!-- <td>{{ usuario.celularUsuario }}</td> -->
                 <td>{{ $formatDate(usuario.fechaCreacion) }}</td>
                 <td>{{ usuario.fechaActualizacion ? $formatDate(usuario.fechaActualizacion) : '-' }}</td>
                 <td>

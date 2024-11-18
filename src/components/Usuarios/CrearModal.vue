@@ -19,6 +19,10 @@
                             <label for="" class="form-label">Correo: </label>
                             <input type="email" class="form-control" v-model="usuario.correo" autocomplete="of">
                         </div>
+                        <!-- <div class="">
+                            <label class="form-label">Número de celular: </label>
+                            <input class="form-control" type="number" v-model="usuario.celularUsuario">
+                        </div> -->
                         <div class="">
                             <label for="" class="form-label">Contraseña: </label>
                             <input type="password" class="form-control" v-model="usuario.password" autocomplete="of">
@@ -61,6 +65,7 @@ let usuario = reactive({
     nombreUsuario: "",
     correo: "",
     password: "",
+    // celularUsuario: 0,
     imagenPefil: null,
     idRoles: 0
 });

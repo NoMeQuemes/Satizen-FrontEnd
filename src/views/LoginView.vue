@@ -101,7 +101,7 @@ const login = () => {
     justify-content: center;
     height: 100vh;
     align-items: center;
-    justify-content: center;
+    padding: 20px; /* Añadido para mejorar el diseño en pantallas pequeñas */
 }
 
 .caja {
@@ -112,6 +112,8 @@ const login = () => {
     -moz-box-shadow: 13px 17px 22px -4px rgba(0, 0, 0, 0.48);
     box-shadow: 13px 17px 22px -4px rgba(0, 0, 0, 0.48);
     border-radius: 20px;
+    overflow: hidden; /* Asegura que el contenido no desborde los bordes redondeados */
+    flex-direction: row; /* Cambiará a columna en pantallas pequeñas */
 }
 
 .cajaFormulario {
@@ -124,9 +126,7 @@ const login = () => {
 
 .form-label {
     display: flex;
-}
-
-.form-label {
+    align-items: center;
     margin-top: 10px;
 }
 
@@ -143,6 +143,7 @@ const login = () => {
 .enlace {
     font-size: 13px;
     padding: 5px;
+    text-align: center;
 }
 
 .cajaFormulario button {
@@ -155,6 +156,53 @@ const login = () => {
     align-items: center;
     justify-content: center;
     background-color: rgba(237, 108, 119, 1);
-    border-radius: 20px;
+}
+
+.cajaLogo img {
+    max-width: 80%; /* Hace que el logo sea responsive */
+    height: auto;
+}
+
+@media (max-width: 768px) {
+    .caja {
+        flex-direction: column-reverse; /* Cambia de fila a columna */
+        height: auto; /* Ajusta la altura automáticamente */
+        width: 90%; /* Ocupa la mayor parte de la pantalla */
+    }
+
+    .cajaFormulario, .cajaLogo {
+        width: 100%; /* Cada sección ocupa todo el ancho */
+    }
+
+    .cajaFormulario {
+        padding: 20px; /* Reduce el padding para pantallas más pequeñas */
+    }
+
+    .cajaLogo {
+        background-color: rgba(237, 108, 119, 0.8); /* Ajusta la opacidad para menos contraste */
+        padding: 20px;
+    }
+
+    .cajaLogo img {
+        max-width: 60%; /* Reduce el tamaño del logo */
+    }
+}
+
+@media (max-width: 480px) {
+    .form-label {
+        font-size: 14px; /* Reduce el tamaño de las etiquetas */
+    }
+
+    .enlace {
+        font-size: 12px; /* Reduce el tamaño del texto */
+    }
+
+    .cajaFormulario {
+        padding: 15px; /* Menor padding en dispositivos muy pequeños */
+    }
+
+    .cajaLogo img {
+        max-width: 50%; /* Logo más pequeño */
+    }
 }
 </style>
