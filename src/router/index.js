@@ -12,6 +12,7 @@ import PermisosView from '@/views/PermisosView.vue'
 import RestaurarPasswordView from '@/views/RestaurarPasswordView.vue'
 import CambiarPasswordView from '@/views/CambiarPasswordView.vue'
 import DispositivosView from '@/views/DispositivosView.vue'
+import HomeUsuarioView from '@/views/HomeUsuarioView.vue'
 
 // import TablaPacientes from '@/views/TablaPacientes.vue'
 import InicioView from '@/views/InicioView.vue' 
@@ -143,6 +144,16 @@ const routes = [
       title: 'Satizen - Dispositivos'
     }
   },
+  {
+    path: '/homeUsuario',
+    name: 'homeUsuario',
+    component: HomeUsuarioView,
+    meta:
+    {
+      requiresAuth: true,
+      title: 'Satizen - Home'
+    }
+  }
 ]
 
 const router = createRouter({

@@ -28,7 +28,16 @@ export const useLoginStore = defineStore("login", () => {
         decodeJwtStore.decodeJwt();
         // expirationSession.expirationSession();
         IsLoading.value = false;
-        router.push({ name: "home", query: { toast: 'success' } });
+        let dataUser = JSON.parse(localStorage.getItem("dataUser"));
+
+        if(dataUser.rolUsuario == 5)
+        {
+          router.push({ name: "homeUsuario"})
+        }
+        else
+        {
+          router.push({ name: "home", query: { toast: 'success' } });
+        }
       })
       .catch((error) => {
         console.log(error);

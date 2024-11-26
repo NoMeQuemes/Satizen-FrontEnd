@@ -9,11 +9,11 @@
             <div class="linea"></div>
             <p>Ingresa tu correo electrónico para buscar tu cuenta.</p>
             <form>
-                <div class="">
+                <div class="input-container">
                     <input placeholder="Correo Electrónico..." class="form-control" type="email" v-model="correo">
                 </div>
-                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                    <router-link :to="{ name: 'login' }" class="btn btn-primary"> Cancelar </router-link>
+                <div class="botones">
+                    <router-link :to="{ name: 'login' }" class="btn btn-primary">Cancelar</router-link>
                     <button @click.prevent="restaurarContraseña" class="btn btn-success">Enviar</button>
                 </div>
             </form>
@@ -68,31 +68,65 @@ function restaurarContraseña() {
     align-items: center;
     justify-content: center;
     height: 100vh;
+    padding: 0 1rem; /* Espaciado lateral en pantallas pequeñas */
 }
 
 .cuerpo {
-    width: 500px;
+    width: 100%;
+    max-width: 500px; /* Tamaño máximo para pantallas grandes */
     padding: 1rem;
-    -webkit-box-shadow: 13px 17px 22px -4px rgba(0, 0, 0, 0.48);
-    -moz-box-shadow: 13px 17px 22px -4px rgba(0, 0, 0, 0.48);
-    box-shadow: 13px 17px 22px -4px rgba(0, 0, 0, 0.48);
-    border-radius: 20px
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 20px;
+    background-color: #fff;
 }
 
 .cuerpo h4 {
     text-align: center;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .linea {
     border: 1px solid gray;
+    margin-bottom: 1rem;
 }
 
 .cuerpo p {
-    margin-top: 15px;
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+    font-size: 0.95rem;
+}
+
+.input-container {
+    margin-bottom: 1.5rem;
 }
 
 .cuerpo input {
     height: 45px;
-    margin-bottom: 20px
+    padding: 0.5rem;
+    border-radius: 8px;
+    font-size: 0.95rem;
+}
+
+.botones {
+    display: flex;
+    flex-direction: column; /* Default para pantallas pequeñas */
+    gap: 0.5rem;
+    justify-content: space-between;
+}
+
+.botones .btn {
+    width: 100%; /* Botones a pantalla completa en móviles */
+}
+
+@media (min-width: 768px) {
+    .botones {
+        flex-direction: row; /* Botones en línea para pantallas medianas y grandes */
+    }
+
+    .botones .btn {
+        width: auto; /* Restaurar tamaño automático para botones */
+    }
 }
 </style>
