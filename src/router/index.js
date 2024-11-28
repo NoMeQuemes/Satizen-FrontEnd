@@ -13,6 +13,7 @@ import RestaurarPasswordView from '@/views/RestaurarPasswordView.vue'
 import CambiarPasswordView from '@/views/CambiarPasswordView.vue'
 import DispositivosView from '@/views/DispositivosView.vue'
 import HomeUsuarioView from '@/views/HomeUsuarioView.vue'
+import NaChat from '@/views/NaChat.vue'
 
 // import TablaPacientes from '@/views/TablaPacientes.vue'
 import InicioView from '@/views/InicioView.vue' 
@@ -36,6 +37,13 @@ const routes = [
       requiresAuth: true,
       title: 'Satizen - Home'
     }
+  },
+
+  {
+    path: '/nachat',
+    name: 'nachat',
+    component: NaChat,
+    
   },
   {
     path: '/instituciones',
