@@ -1,57 +1,55 @@
 <template>
   <SideBar/>
   <div class="app-container">
+    <SideBar/>
     <div class="main-content">
-      <EncabezadoPrincipal></EncabezadoPrincipal>
       <div class="chat-container">
         <ChatList />
-        <ChatView />
+        <MyComponent />
       </div>
     </div>
   </div>
 </template>
 
-<script setup>
-import EncabezadoPrincipal from '@/components/EncabezadoPrincipal.vue';
-import SideBar from '@/components/SideBar.vue';
-import ChatList from '@/components/ChatList.vue';
-import ChatView from '@/components/ChatView.vue';
+<script>
+ // import Encabezado from '@/components/Encabezado.vue';
+ // import BarraLateral from '@/components/BarraLateral.vue';
+  import ChatList from '@/components/ChatList.vue';
+  import MyComponent from '@/components/MyComponent.vue';
+  import SideBar from '@/components/SideBar.vue';
 
-
-// export default {
-//   components: { EncabezadoPrincipal ,BarraLateral, ChatList, ChatView },
-//   name: "PatientList",
-// };
-
-
+  export default {
+      components: {  SideBar,ChatList, MyComponent},
+      name: "PatientList",
+  };
 </script>
 
 <style scoped>
 .app-container {
-  display: flex;
-  height: 100vh;
-  overflow: hidden;
+display: flex;
+height: 100vh; 
+overflow: hidden; 
 }
 
 .main-content {
-  flex-grow: 2;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+flex-grow: 1;
+display: flex;
+flex-direction: column;
+height: 100vh;
 }
 
 .chat-container {
-  display: flex;
-  flex-grow: 1;
-  overflow: hidden;
+display: flex;
+flex-grow: 1;
+overflow: hidden;
 }
 
-.main-content>.topbar {
-  flex-shrink: 0;
+.main-content > .topbar {
+flex-shrink: 0;
 }
 
-.chat-container>* {
-  flex-grow: 1;
-  overflow-y: auto;
+.chat-container > * {
+flex-grow: 1;
+overflow-y: auto;
 }
 </style>

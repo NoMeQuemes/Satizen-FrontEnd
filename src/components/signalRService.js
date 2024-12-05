@@ -1,25 +1,17 @@
 import * as signalR from '@microsoft/signalr';
-import {jwtDecode} from 'jwt-decode'; // Importa jwt-decode correctamente
+import { jwtDecode } from 'jwt-decode'; 
 
-let idAutor = null; // Variable para almacenar el nameidentifier
+let idAutor = null; 
 let connection;
-
-// Función para obtener el token desde localStorage
-const obtenerToken = async (timeout = 10000) => {
-  const startTime = Date.now();
-  while (!localStorage.getItem("token")) {
-    if (Date.now() - startTime > timeout) {
-      throw new Error("No se obtuvo el token dentro del tiempo permitido");
-    }
-    console.log("Esperando a que el token esté disponible...");
-    await new Promise(resolve => setTimeout(resolve, 500));
-  }
-  return localStorage.getItem("token");
-};
 
 // Función para inicializar la conexión de SignalR
 const initializeSignalR = async () => {
-  const token = await obtenerToken(); // Asegura que el token esté disponible antes de conectar
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    console.error("El token no está disponible en localStorage. Asegúrate de almacenarlo antes de inicializar SignalR.");
+    return;
+  }
 
   // Decodificar el token para obtener el nameidentifier
   try {
@@ -28,6 +20,7 @@ const initializeSignalR = async () => {
     idAutor = decodedToken["http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier"];
   } catch (error) {
     console.error("Error al decodificar el token:", error);
+    return;
   }
 
   // Crear y configurar la conexión
@@ -72,9 +65,9 @@ const startConnection = async () => {
 };
 
 // Función para enviar un mensaje privado
-const sendPrivateMessage = async (userId, message) => {
+const SendMessageToGroup = async (userId, message) => {
   try {
-    await connection.invoke('SendPrivateMessage', userId, message);
+    await connection.invoke('SendMessageToGroup', userId, message);
     console.log("Mensaje privado enviado a:", userId);
   } catch (error) {
     console.error("Error enviando mensaje privado:", error);
@@ -91,6 +84,5 @@ const sendMessageToAll = async (message) => {
   }
 };
 
-// Exporta la conexión y las funciones, incluyendo idAutor
-const getIdAutor = () => idAutor; // Función para obtener idAutor
-export { initializeSignalR, sendPrivateMessage, sendMessageToAll, getIdAutor, startConnection, connection };
+const getIdAutor = () => idAutor; 
+export { initializeSignalR, sendMessageToAll, SendMessageToGroup, getIdAutor, startConnection, connection };

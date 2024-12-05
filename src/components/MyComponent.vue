@@ -1,14 +1,24 @@
 <template>
   <div>
-    <!-- Inputs para ID del autor y receptor manual -->
+
     <input type="text" v-model="idReceptor" placeholder="ID del receptor" />
     <input type="text" v-model="idAutor" placeholder="ID del receptor" />
     <button @click="fetchInvitados">Iniciar sesión</button>
     <button @click="disconnect">Desconectarse</button>
 
-    <div v-if="userCount > 0">
-      <p>Usuarios conectados: {{ userCount }}</p>
-    </div>
+    <button v-if="userCount > 0" class="user-count-button">
+       Usuarios conectados: {{ userCount }}
+    </button>
+
+ 
+    <ul>
+      <li v-for="user in connectedUsers" :key="user.userId">
+        <button @click="seleccionarUsuario(user.userId)" class="user-button">
+          {{ user.nombre }} (ID: {{ user.userId }})
+          <span v-if="user.userId === idAutor"> - Tú</span>
+        </button>
+      </li>
+    </ul>
 
     <div v-if="nombre">
       <p>Conectado como: {{ nombre }}</p>
@@ -32,28 +42,21 @@
         <h4 v-if="nombreReceptor">{{ nombreReceptor }}</h4>
       </div>
 
-      <!-- Chat grupal -->
+
       <div class="group-chat">
-        <h3>Chat Grupal</h3>
         <div class="chat-messages" style="max-height: 300px; overflow-y: auto;">
           <div v-for="lm in listarMensajes" :key="lm.id" :class="messageClass(lm)">
             <div class="message-content">
               <h3>{{ lm.contenidoMensaje }}</h3>
             </div>
-            <p>{{ lm.visto ? "visto" : "" }}</p>
-            <div class="message-time">{{ lm.timestamp }}</div>
+            <div class="message-time">{{ lm.timestamp }}</div>  
           </div>
-        </div>
-        <div class="chat-input">
-          <input type="text" v-model="newGroupMessage" placeholder="Escribe un mensaje grupal..." />
-          <button @click="EnviarMensajeGrupal">Enviar</button>
         </div>
       </div>
 
+      <!-- Chat privado -->
       <div class="private-chat">
-        <h3>Chat Privado</h3>
         <div class="chat-messages" style="max-height: 300px; overflow-y: auto;">
-          <!-- Puedes agregar aquí también el chat privado si lo deseas -->
         </div>
         <div class="chat-input">
           <input type="text" v-model="newMessage" placeholder="Escribe un mensaje privado..." />
@@ -66,7 +69,7 @@
 
 <script>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { initializeSignalR, sendPrivateMessage, sendMessageToAll, connection } from '@/components/signalRService.js';
+import { initializeSignalR , sendMessageToAll,SendMessageToGroup, connection } from '@/components/signalRService.js';
 import { useDecodeJwT } from '@/store/decodeJwt';
 import axios from 'axios';
 
@@ -84,10 +87,35 @@ export default {
     const connectedUsers = ref([]);
     const userCount = ref(0); // Número de usuarios conectados
 
-    const fetchInvitados = async () => {
-      const response = await axios.get('http://localhost:7298/api/Mensajes/EntreUsuarios/3/2');
-      console.log("Esto se ejecutó", response.data);
-    };
+    const fetchInvitados = async (usuarioId2) => {
+  const response = await axios.get(`https://localhost:7298/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+  console.log("Esto se ejecutó", response.data);
+};
+
+const seleccionarUsuario = async (idUsuario) => {
+  console.log("usuarioId", idUsuario);
+  idReceptor.value = idUsuario; 
+  console.log("idReceptor.value", idReceptor.value);
+  const usuarioId2 = parseInt(idUsuario, 10); 
+  joinGroup(idAutor.value, usuarioId2);
+  await fetchMensajesAntiguos(usuarioId2);
+};
+
+const fetchMensajesAntiguos = async (usuarioId2) => {
+  try {
+    const response = await axios.get(`https://localhost:7298/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+    console.log("Mensajes antiguos:", response.data);
+
+    listarMensajes.value = response.data.map((mensaje) => ({
+      idAutor: mensaje.idAutor,
+      idReceptor: mensaje.idReceptor,
+      contenidoMensaje: mensaje.contenidoMensaje,
+      timestamp: new Date(mensaje.timestamp).toLocaleTimeString(), // Formatear para el frontend
+    }));
+  } catch (error) {
+    console.error("Error al obtener mensajes antiguos:", error);
+  }
+};
 
     const probar = () => {
       if (decodeJwt.value && decodeJwt.value.dataUser) {
@@ -101,27 +129,57 @@ export default {
     };
 
     const disconnect = async () => {
-      if (connection) {
-        await connection.stop();
-        console.log("Desconectado");
-        connectedUsers.value = [];
-        listarMensajes.value = [];
-        idAutor.value = '';
-        idReceptor.value = '';
-        nombre.value = '';
-      }
-    };
+  try {
+    if (connection) {
+      // Llama al método del servidor para manejar la desconexión
+      await connection.invoke("Disconnect");
+      console.log("Desconexión del servidor exitosa.");
+
+      // Detén la conexión de SignalR
+      await connection.stop();
+      console.log("Conexión de SignalR detenida.");
+
+      // Limpia los datos locales en el cliente
+      connectedUsers.value = [];
+      listarMensajes.value = [];
+      idAutor.value = '';
+      idReceptor.value = '';
+      nombre.value = '';
+
+      console.log("Datos locales limpiados. Usuario desconectado.");
+    }
+  } catch (error) {
+    console.error("Error durante la desconexión:", error);
+  }
+};
+
+
+
 
     const EnviarMensajePrivado = async () => {
       if (idReceptor.value && newMessage.value.trim()) {
+        await SendMessageToGroup(idReceptor.value, newMessage.value);
+        const mensaje = {
+          idAutor: idAutor.value, // Asegúrate de que este valor esté asignado correctamente
+          idReceptor: idReceptor.value,
+          contenidoMensaje: newMessage.value,
+          timestamp: new Date().toISOString(), // Formato ISO para el backend
+        };
+
         try {
-          await sendPrivateMessage(idReceptor.value, newMessage.value);
+          // Realiza la solicitud POST al endpoint especificado
+          const response = await axios.post('https://localhost:7298/api/Mensajes', mensaje, {
+            headers: { 'Content-Type': 'application/json' },
+          });
+
+          console.log("Mensaje enviado desde el endpoint:", response.data);
+
           listarMensajes.value.push({
-            idAutor: idAutor.value,
-            contenidoMensaje: newMessage.value,
+            ...mensaje,
             timestamp: new Date().toLocaleTimeString(),
           });
-          newMessage.value = '';
+
+          newMessage.value = ''; 
         } catch (error) {
           console.error("Error enviando mensaje privado:", error);
         }
@@ -129,6 +187,18 @@ export default {
         console.warn("Debes seleccionar un receptor y escribir un mensaje.");
       }
     };
+
+    
+    const joinGroup = async (idAutor, idReceptor) => {
+  try {
+    console.log("joinGroup", idAutor, idReceptor);
+    // Invoca el método del servidor pasándole idAutor e idReceptor
+    await connection.invoke('JoinGroup', idAutor, idReceptor);
+    console.log(`Te has unido al grupo con ID: ${idAutor}-${idReceptor}`);
+  } catch (error) {
+    console.error(`Error al unirse al grupo ${idAutor}-${idReceptor}:`, error);
+  }
+};
 
     const EnviarMensajeGrupal = async () => {
       if (newGroupMessage.value.trim()) {
@@ -169,8 +239,30 @@ export default {
         });
       });
 
+      connection.on('GroupJoined', (groupId) => {
+    console.log(`Confirmación desde el servidor: te has unido al grupo ${groupId}`);
+  });
+
+// Manejar mensajes recibidos en un grupo
+connection.on("ReceiveGroupMessage", (senderId, message) => {
+
+  listarMensajes.value.push({
+          idAutor: senderId,
+          contenidoMensaje:message,
+          timestamp: new Date().toLocaleTimeString(),
+        });
+  console.log(`Mensaje recibido de ${senderId}:`, message);
+});
+
+      connection.on('NotifyMessageReceived', (senderId) => {
+        console.log(`Has recibido un mensaje de ${senderId}`);
+        // Aquí puedes agregar lógica para mostrar una notificación visual o alerta
+        alert(`¡Nuevo mensaje de ${senderId}!`);
+      });
+
       connection.on('UpdateConnectedUsers', (users) => {
         connectedUsers.value = users;
+        console.log("connectedUsers")
       });
 
       connection.on('UpdateUserCount', (count) => {
@@ -179,18 +271,28 @@ export default {
     };
 
     onMounted(() => {
-      initializeSignalR()
-        .then(() => {
-          console.log('Conexión establecida');
-          probar();
-          setupConnectionHandlers();
-        })
-        .catch(err => console.error('Error al iniciar la conexión:', err));
-    });
+  initializeSignalR()
+    .then(() => {
+      console.log('Conexión establecida');
+      probar();
+      setupConnectionHandlers();
 
-    onBeforeUnmount(() => {
-      disconnect();
-    });
+      // Manejador para cerrar la conexión cuando se cierre la ventana
+      window.addEventListener('beforeunload', handleBeforeUnload);
+    })
+    .catch(err => console.error('Error al iniciar la conexión:', err));
+});
+
+onBeforeUnmount(() => {
+  disconnect();
+  window.removeEventListener('beforeunload', handleBeforeUnload); // Limpieza
+});
+
+
+const handleBeforeUnload = () => {
+  disconnect(); 
+  console.log("Conexión cerrada debido al cierre de la ventana.");
+};
 
     return {
       listarMensajes,
@@ -202,16 +304,17 @@ export default {
       EnviarMensajeGrupal,
       messageClass,
       nombre,
+      joinGroup,
       nombreReceptor,
       connectedUsers,
       disconnect,
       fetchInvitados,
+      seleccionarUsuario,
       userCount, // Exponer el número de usuarios conectados
     };
   },
 };
 </script>
-
 <style scoped>
 
 .chat-messages {

@@ -5,6 +5,7 @@ import { useRouter } from "vue-router";
 import { useDecodeJwT } from "./decodeJwt";
 import { ref } from "vue";
 import { toast } from "vue3-toastify";
+import { initializeSignalR } from '@/components/signalRService';
 
 export const useLoginStore = defineStore("login", () => {
   const decodeJwtStore = useDecodeJwT();
@@ -29,8 +30,8 @@ export const useLoginStore = defineStore("login", () => {
         // expirationSession.expirationSession();
         IsLoading.value = false;
         let dataUser = JSON.parse(localStorage.getItem("dataUser"));
-
-        if(dataUser.rolUsuario == 4)
+        initializeSignalR();
+        if(dataUser.rolUsuario == 5)
         {
           router.push({ name: "homeUsuario"})
         }
