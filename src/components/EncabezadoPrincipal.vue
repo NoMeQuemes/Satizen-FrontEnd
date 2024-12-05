@@ -35,11 +35,12 @@
 
 <script setup>
 import axiosFunction from '@/Functions/axios';
-import { reactive, onMounted } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useDecodeJwT } from '@/store/decodeJwt';
 
 
-let usuario = reactive(JSON.parse(localStorage.getItem('dataUser')));
+let dataUser = JSON.parse(localStorage.getItem('dataUser'));
+let usuario = ref(dataUser);
 const decodeJwtStore = useDecodeJwT();
 
 onMounted(() => {
@@ -76,7 +77,7 @@ function getImageUrl(imageUrl) {
   right: 0;
   height: auto;
   background-color: white;
-  border-radius: 40px;
+  border-radius: 20px;
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
   padding: 10px;
   max-width: 75%;

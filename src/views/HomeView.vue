@@ -8,7 +8,7 @@
 
     <div class="body">
       <EncabezadoPrincipal></EncabezadoPrincipal>
-      <DashboardCards></DashboardCards>
+      <DashboardCards v-rol="'1'"></DashboardCards>
       <AlertasMedicas></AlertasMedicas>
     </div>
 

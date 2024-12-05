@@ -64,7 +64,8 @@ let modalCrearLLamada = ref(false);
 
 let llamado = reactive({
     idPaciente: dataUser.idUsuario,
-    observacionLlamado: ""
+    observacionLlamado: "",
+    prioridadLlamado: "Media"
 });
 
 function realizarLLamado() {

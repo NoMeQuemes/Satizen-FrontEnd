@@ -13,36 +13,45 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn btn-primary">Sí</button>
+                    <button @click="enviarLlamadoUrgente" type="button" class="btn btn-primary">Sí</button>
                 </div>
             </div>
         </div>
     </div>
 </template>
 
-<script>
-// import axiosFunction from '@/Functions/axios';
-// import { reactive, defineEmits } from 'vue';
-// import { toast } from "vue3-toastify";
+<script setup>
+import axiosFunction from '@/Functions/axios';
+import { reactive } from 'vue';
+import { toast } from "vue3-toastify";
+import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-// const dataUser = JSON.parse(localStorage.getItem('dataUser'));
+const dataUser = JSON.parse(localStorage.getItem('dataUser'));
 
-// let llamado = reactive({
-//     idPaciente: dataUser.idUsuario
-// });
+let llamado = reactive({
+    idPaciente: dataUser.idUsuario,
+    prioridadLlamado: null
+});
 
-// const emit = defineEmits(['actualizarPaciente'])
-
-// function enviarLlamadoURgente(){
-//     axiosFunction.post("Llamado/AgregarLlamadoPaciente", llamado)
-//         .then(() => {
-//             emit('actualizarPaciente')
-//             toast.success("Realizado con exito", {
-//                 autoClose: 5000,
-//                 position: toast.POSITION.BOTTOM_RIGHT
-//             })
-//         })
-// }
+function enviarLlamadoUrgente(){
+    const modal = bootstrap.Modal.getInstance(document.getElementById('staticModalLlamado'));
+    modal.hide();
+    axiosFunction.post("Llamado/AgregarLlamadoPaciente", llamado)
+        .then(() => {
+            toast.success("Realizado con exito", {
+                autoClose: 5000,
+                position: toast.POSITION.BOTTOM_RIGHT
+            })
+        })
+        .catch((error) => {
+            console.log(error);
+            toast.error("Error", {
+                autoClose: 5000,
+                position: toast.POSITION.BOTTOM_RIGHT
+            });
+        })
+    // console.log("Datos del pedido urgente: ", JSON.stringify(llamado) )
+}
 
 
 </script>
