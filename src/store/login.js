@@ -30,7 +30,7 @@ export const useLoginStore = defineStore("login", () => {
         IsLoading.value = false;
         let dataUser = JSON.parse(localStorage.getItem("dataUser"));
 
-        if(dataUser.rolUsuario == 5)
+        if(dataUser.rolUsuario == 4)
         {
           router.push({ name: "homeUsuario"})
         }

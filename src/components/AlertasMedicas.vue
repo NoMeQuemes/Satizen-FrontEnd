@@ -51,9 +51,8 @@ import * as signalR from '@microsoft/signalr';
 import AsignarLlamadoModal from './Llamados/AsignarLlamadoModal.vue';
 import bootstrap from 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
-
 const alerts = ref([]);
-let connection;
+// let connection;
 let modalCrearShow = ref(false);
 let idLlamado = ref(0);
 let sinAlertas = ref(false);
@@ -78,10 +77,24 @@ function listarLlamados() {
     })
 }
 
-function initializeSignalR() {
-  connection = new signalR.HubConnectionBuilder()
-    // .withUrl('http://localhost:7298/alertaHub') // Aquí pones la URL del Hub en el backend
-    .withUrl('https://satizen.somee.com/alertaHub') // Aquí pones la URL del Hub en el backend
+async function getUpdatedToken() {
+  try {
+    // Realiza una solicitud de prueba para forzar la actualización del token si es necesario
+    await axiosFunction.get("Institucion/ListarInstituciones"); // Usa un endpoint existente
+    return localStorage.getItem("token"); // Devuelve el token actualizado
+  } catch (error) {
+    console.error("Error al actualizar el token:", error);
+    throw error;
+  }
+}
+
+async function initializeSignalR() {
+  let token = await getUpdatedToken();
+  const connection = new signalR.HubConnectionBuilder()
+    .withUrl('http://localhost:7298/alertaHub', {
+      accessTokenFactory: () => token
+    }) // Aquí pones la URL del Hub en el backend
+    // .withUrl('https://satizen.somee.com/alertaHub') // Aquí pones la URL del Hub en el backend
     .withAutomaticReconnect() // Configura la reconexión automática en caso de desconexiones
     .build();
 

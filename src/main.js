@@ -7,8 +7,10 @@ import { createPinia } from "pinia";
 import roleDirective from "./Functions/directivas";
 
 //Bootstrap
-import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap/dist/css/bootstrap.min.css"; // Usa solo una versión del CSS
 import "bootstrap/dist/js/bootstrap.bundle";
+
+
 
 //Funciones propias
 import axiosFunction from "./Functions/axios"; //funciones propias de axios (librería para usar APIs)

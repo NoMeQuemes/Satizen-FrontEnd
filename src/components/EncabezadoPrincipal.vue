@@ -60,9 +60,10 @@ function traerUsuario() {
 
 function getImageUrl(imageUrl) {
   // Si la URL es relativa, convierte a absoluta
-  // return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
-  return `https://www.satizen.somee.com/${imageUrl}`
+  return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
+  // return `https://www.satizen.somee.com/${imageUrl}`
 }
+
 
 
 </script>

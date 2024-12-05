@@ -1,6 +1,6 @@
 <template>
+  <SideBar/>
   <div class="app-container">
-    <BarraLateral />
     <div class="main-content">
       <EncabezadoPrincipal></EncabezadoPrincipal>
       <div class="chat-container">
@@ -11,19 +11,22 @@
   </div>
 </template>
 
-<script>
+<script setup>
 import EncabezadoPrincipal from '@/components/EncabezadoPrincipal.vue';
-import BarraLateral from '@/components/BarraLateral.vue';
+import SideBar from '@/components/SideBar.vue';
 import ChatList from '@/components/ChatList.vue';
 import ChatView from '@/components/ChatView.vue';
-import EncabezadoPrincipal from '@/components/EncabezadoPrincipal.vue';
-export default {
-  components: { Encabezado, BarraLateral, ChatList, ChatView },
-  name: "PatientList",
-};
+
+
+// export default {
+//   components: { EncabezadoPrincipal ,BarraLateral, ChatList, ChatView },
+//   name: "PatientList",
+// };
+
+
 </script>
 
-<style>
+<style scoped>
 .app-container {
   display: flex;
   height: 100vh;
