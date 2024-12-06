@@ -2,8 +2,8 @@ import axios from "axios";
 import router from "../router";
 
 const axiosFunction = axios.create({
-  baseURL: "https://excelencia.myiphost.com:86/Satizem/api/",
-  // baseURL: "https://satizenapi20241206024632.azurewebsites.net/api/",
+  // baseURL: "https://excelencia.myiphost.com:86/Satizem/api/",
+  baseURL: "https://satizenapi20241206024632.azurewebsites.net/api/",
   //  baseURL: 'https://www.satizen.somee.com/api/'
   // baseURL: "http://localhost:7298/api/",
 });
@@ -42,8 +42,8 @@ axiosFunction.interceptors.response.use(
         };
         // const response = await axios.post("http://localhost:7298/api/Acceso/RefreshToken", credenciales
         // const response = await axios.post("https://www.satizen.somee.com/api/Acceso/RefreshToken", credenciales
-        // const response = await axios.post("https://satizenapi20241206024632.azurewebsites.net/api/Acceso/RefreshToken", credenciales
-        const response = await axios.post("https://excelencia.myiphost.com:86/Satizem/api/Acceso/RefreshToken", credenciales
+        const response = await axios.post("https://satizenapi20241206024632.azurewebsites.net/api/Acceso/RefreshToken", credenciales
+        // const response = await axios.post("https://excelencia.myiphost.com:86/Satizem/api/Acceso/RefreshToken", credenciales
         );
         const newToken = response.data.token;
         const newRefreshToken = response.data.refreshToken;
