@@ -63,8 +63,8 @@ function getImageUrl(imageUrl) {
   // Si la URL es relativa, convierte a absoluta
   // return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
   // return `https://www.satizen.somee.com/${imageUrl}`
-  return `https://satizenapi20241206024632.azurewebsites.net/${imageUrl}`
-  // return `https://excelencia.myiphost.com:86/Satizem/${imageUrl}`
+  // return `https://satizenapi20241206024632.azurewebsites.net/${imageUrl}`
+  return `https://excelencia.myiphost.com:86/Satizem/${imageUrl}`
 }
 
 
