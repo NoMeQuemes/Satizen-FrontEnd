@@ -7,10 +7,10 @@
     <button @click="disconnect">Desconectarse</button>
 
     <button v-if="userCount > 0" class="user-count-button">
-       Usuarios conectados: {{ userCount }}
+      Usuarios conectados: {{ userCount }}
     </button>
 
- 
+
     <ul>
       <li v-for="user in connectedUsers" :key="user.userId">
         <button @click="seleccionarUsuario(user.userId)" class="user-button">
@@ -49,7 +49,7 @@
             <div class="message-content">
               <h3>{{ lm.contenidoMensaje }}</h3>
             </div>
-            <div class="message-time">{{ lm.timestamp }}</div>  
+            <div class="message-time">{{ lm.timestamp }}</div>
           </div>
         </div>
       </div>
@@ -69,7 +69,7 @@
 
 <script>
 import { ref, onMounted, onBeforeUnmount } from 'vue';
-import { initializeSignalR , sendMessageToAll,SendMessageToGroup, connection } from '@/components/signalRService.js';
+import { initializeSignalR, sendMessageToAll, SendMessageToGroup, connection } from '@/components/signalRService.js';
 import { useDecodeJwT } from '@/store/decodeJwt';
 import axios from 'axios';
 
@@ -88,34 +88,36 @@ export default {
     const userCount = ref(0); // Número de usuarios conectados
 
     const fetchInvitados = async (usuarioId2) => {
-  const response = await axios.get(`https://satizen.somee.com/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
-  console.log("Esto se ejecutó", response.data);
-};
+      const response = await axios.get(`https://satizenapi20241206024632.azurewebsites.net/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+      // const response = await axios.get(`https://satizen.somee.com/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+      console.log("Esto se ejecutó", response.data);
+    };
 
-const seleccionarUsuario = async (idUsuario) => {
-  console.log("usuarioId", idUsuario);
-  idReceptor.value = idUsuario; 
-  console.log("idReceptor.value", idReceptor.value);
-  const usuarioId2 = parseInt(idUsuario, 10); 
-  joinGroup(idAutor.value, usuarioId2);
-  await fetchMensajesAntiguos(usuarioId2);
-};
+    const seleccionarUsuario = async (idUsuario) => {
+      console.log("usuarioId", idUsuario);
+      idReceptor.value = idUsuario;
+      console.log("idReceptor.value", idReceptor.value);
+      const usuarioId2 = parseInt(idUsuario, 10);
+      joinGroup(idAutor.value, usuarioId2);
+      await fetchMensajesAntiguos(usuarioId2);
+    };
 
-const fetchMensajesAntiguos = async (usuarioId2) => {
-  try {
-    const response = await axios.get(`https://satizen.somee.com/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
-    console.log("Mensajes antiguos:", response.data);
+    const fetchMensajesAntiguos = async (usuarioId2) => {
+      try {
+        const response = await axios.get(`https://satizenapi20241206024632.azurewebsites.net/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+        // const response = await axios.get(`https://satizen.somee.com/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+        console.log("Mensajes antiguos:", response.data);
 
-    listarMensajes.value = response.data.map((mensaje) => ({
-      idAutor: mensaje.idAutor,
-      idReceptor: mensaje.idReceptor,
-      contenidoMensaje: mensaje.contenidoMensaje,
-      timestamp: new Date(mensaje.timestamp).toLocaleTimeString(), // Formatear para el frontend
-    }));
-  } catch (error) {
-    console.error("Error al obtener mensajes antiguos:", error);
-  }
-};
+        listarMensajes.value = response.data.map((mensaje) => ({
+          idAutor: mensaje.idAutor,
+          idReceptor: mensaje.idReceptor,
+          contenidoMensaje: mensaje.contenidoMensaje,
+          timestamp: new Date(mensaje.timestamp).toLocaleTimeString(), // Formatear para el frontend
+        }));
+      } catch (error) {
+        console.error("Error al obtener mensajes antiguos:", error);
+      }
+    };
 
     const probar = () => {
       if (decodeJwt.value && decodeJwt.value.dataUser) {
@@ -129,29 +131,29 @@ const fetchMensajesAntiguos = async (usuarioId2) => {
     };
 
     const disconnect = async () => {
-  try {
-    if (connection) {
-      // Llama al método del servidor para manejar la desconexión
-      await connection.invoke("Disconnect");
-      console.log("Desconexión del servidor exitosa.");
+      try {
+        if (connection) {
+          // Llama al método del servidor para manejar la desconexión
+          await connection.invoke("Disconnect");
+          console.log("Desconexión del servidor exitosa.");
 
-      // Detén la conexión de SignalR
-      await connection.stop();
-      console.log("Conexión de SignalR detenida.");
+          // Detén la conexión de SignalR
+          await connection.stop();
+          console.log("Conexión de SignalR detenida.");
 
-      // Limpia los datos locales en el cliente
-      connectedUsers.value = [];
-      listarMensajes.value = [];
-      idAutor.value = '';
-      idReceptor.value = '';
-      nombre.value = '';
+          // Limpia los datos locales en el cliente
+          connectedUsers.value = [];
+          listarMensajes.value = [];
+          idAutor.value = '';
+          idReceptor.value = '';
+          nombre.value = '';
 
-      console.log("Datos locales limpiados. Usuario desconectado.");
-    }
-  } catch (error) {
-    console.error("Error durante la desconexión:", error);
-  }
-};
+          console.log("Datos locales limpiados. Usuario desconectado.");
+        }
+      } catch (error) {
+        console.error("Error durante la desconexión:", error);
+      }
+    };
 
 
 
@@ -168,7 +170,8 @@ const fetchMensajesAntiguos = async (usuarioId2) => {
 
         try {
           // Realiza la solicitud POST al endpoint especificado
-          const response = await axios.post('https://satizen.somee.com/api/Mensajes', mensaje, {
+          // const response = await axios.post('https://satizen.somee.com/api/Mensajes', mensaje, {
+          const response = await axios.post('https://satizenapi20241206024632.azurewebsites.net/api/Mensajes', mensaje, {
             headers: { 'Content-Type': 'application/json' },
           });
 
@@ -179,7 +182,7 @@ const fetchMensajesAntiguos = async (usuarioId2) => {
             timestamp: new Date().toLocaleTimeString(),
           });
 
-          newMessage.value = ''; 
+          newMessage.value = '';
         } catch (error) {
           console.error("Error enviando mensaje privado:", error);
         }
@@ -188,17 +191,17 @@ const fetchMensajesAntiguos = async (usuarioId2) => {
       }
     };
 
-    
+
     const joinGroup = async (idAutor, idReceptor) => {
-  try {
-    console.log("joinGroup", idAutor, idReceptor);
-    // Invoca el método del servidor pasándole idAutor e idReceptor
-    await connection.invoke('JoinGroup', idAutor, idReceptor);
-    console.log(`Te has unido al grupo con ID: ${idAutor}-${idReceptor}`);
-  } catch (error) {
-    console.error(`Error al unirse al grupo ${idAutor}-${idReceptor}:`, error);
-  }
-};
+      try {
+        console.log("joinGroup", idAutor, idReceptor);
+        // Invoca el método del servidor pasándole idAutor e idReceptor
+        await connection.invoke('JoinGroup', idAutor, idReceptor);
+        console.log(`Te has unido al grupo con ID: ${idAutor}-${idReceptor}`);
+      } catch (error) {
+        console.error(`Error al unirse al grupo ${idAutor}-${idReceptor}:`, error);
+      }
+    };
 
     const EnviarMensajeGrupal = async () => {
       if (newGroupMessage.value.trim()) {
@@ -240,19 +243,19 @@ const fetchMensajesAntiguos = async (usuarioId2) => {
       });
 
       connection.on('GroupJoined', (groupId) => {
-    console.log(`Confirmación desde el servidor: te has unido al grupo ${groupId}`);
-  });
+        console.log(`Confirmación desde el servidor: te has unido al grupo ${groupId}`);
+      });
 
-// Manejar mensajes recibidos en un grupo
-connection.on("ReceiveGroupMessage", (senderId, message) => {
+      // Manejar mensajes recibidos en un grupo
+      connection.on("ReceiveGroupMessage", (senderId, message) => {
 
-  listarMensajes.value.push({
+        listarMensajes.value.push({
           idAutor: senderId,
-          contenidoMensaje:message,
+          contenidoMensaje: message,
           timestamp: new Date().toLocaleTimeString(),
         });
-  console.log(`Mensaje recibido de ${senderId}:`, message);
-});
+        console.log(`Mensaje recibido de ${senderId}:`, message);
+      });
 
       connection.on('NotifyMessageReceived', (senderId) => {
         console.log(`Has recibido un mensaje de ${senderId}`);
@@ -271,28 +274,28 @@ connection.on("ReceiveGroupMessage", (senderId, message) => {
     };
 
     onMounted(() => {
-  initializeSignalR()
-    .then(() => {
-      console.log('Conexión establecida');
-      probar();
-      setupConnectionHandlers();
+      initializeSignalR()
+        .then(() => {
+          console.log('Conexión establecida');
+          probar();
+          setupConnectionHandlers();
 
-      // Manejador para cerrar la conexión cuando se cierre la ventana
-      window.addEventListener('beforeunload', handleBeforeUnload);
-    })
-    .catch(err => console.error('Error al iniciar la conexión:', err));
-});
+          // Manejador para cerrar la conexión cuando se cierre la ventana
+          window.addEventListener('beforeunload', handleBeforeUnload);
+        })
+        .catch(err => console.error('Error al iniciar la conexión:', err));
+    });
 
-onBeforeUnmount(() => {
-  disconnect();
-  window.removeEventListener('beforeunload', handleBeforeUnload); // Limpieza
-});
+    onBeforeUnmount(() => {
+      disconnect();
+      window.removeEventListener('beforeunload', handleBeforeUnload); // Limpieza
+    });
 
 
-const handleBeforeUnload = () => {
-  disconnect(); 
-  console.log("Conexión cerrada debido al cierre de la ventana.");
-};
+    const handleBeforeUnload = () => {
+      disconnect();
+      console.log("Conexión cerrada debido al cierre de la ventana.");
+    };
 
     return {
       listarMensajes,
@@ -316,10 +319,11 @@ const handleBeforeUnload = () => {
 };
 </script>
 <style scoped>
-
 .chat-messages {
-  max-height: 300px; /* Puedes ajustar el valor dependiendo de lo que necesites */
-  overflow-y: auto;  /* Hace que los mensajes puedan desplazarse si exceden el tamaño */
+  max-height: 300px;
+  /* Puedes ajustar el valor dependiendo de lo que necesites */
+  overflow-y: auto;
+  /* Hace que los mensajes puedan desplazarse si exceden el tamaño */
   padding: 10px;
   border: 1px solid #ccc;
   background-color: #f9f9f9;
@@ -329,6 +333,7 @@ const handleBeforeUnload = () => {
   font-weight: bold;
   color: green;
 }
+
 .chat-view {
   width: 50%;
   display: flex;
@@ -355,7 +360,7 @@ const handleBeforeUnload = () => {
 }
 
 .mensaje-izquierda {
-  text-align: left; 
+  text-align: left;
   background-color: #e0f7fa;
   padding: 10px;
   border-radius: 10px;

@@ -91,11 +91,12 @@ async function getUpdatedToken() {
 async function initializeSignalR() {
   let token = await getUpdatedToken();
   const connection = new signalR.HubConnectionBuilder()
+    .withUrl('https://excelencia.myiphost.com:86/Satizem/alertaHub', {
+    // .withUrl('https://satizenapi20241206024632.azurewebsites.net/alertaHub', {
     // .withUrl('http://localhost:7298/alertaHub', {
-    .withUrl('https://satizen.somee.com/alertaHub', {
+    // .withUrl('https://satizen.somee.com/alertaHub', {
       accessTokenFactory: () => token
-    }) // Aquí pones la URL del Hub en el backend
-    // .withUrl('https://satizen.somee.com/alertaHub') // Aquí pones la URL del Hub en el backend
+    })
     .withAutomaticReconnect() // Configura la reconexión automática en caso de desconexiones
     .build();
 
@@ -124,7 +125,9 @@ function asignarLlamado(id) {
 function getImageUrl(imageUrl) {
   // Si la URL es relativa, convierte a absoluta
   // return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
-  return `https://www.satizen.somee.com/${imageUrl}`
+  return `https://excelencia.myiphost.com:86/Satizem/${imageUrl}`
+  // return `https://satizenapi20241206024632.azurewebsites.net/${imageUrl}`
+  // return `https://www.satizen.somee.com/${imageUrl}`
 
 }
 
