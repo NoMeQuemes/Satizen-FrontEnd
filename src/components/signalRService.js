@@ -25,7 +25,7 @@ const initializeSignalR = async () => {
 
   // Crear y configurar la conexión
   connection = new signalR.HubConnectionBuilder()
-    .withUrl('http://localhost:7298/chatHub', {
+    .withUrl('https://satizen.somee.com/chatHub', {
       accessTokenFactory: () => token
     })
     .configureLogging(signalR.LogLevel.Information)

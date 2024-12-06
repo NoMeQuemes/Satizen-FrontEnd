@@ -88,7 +88,7 @@ export default {
     const userCount = ref(0); // Número de usuarios conectados
 
     const fetchInvitados = async (usuarioId2) => {
-  const response = await axios.get(`http://localhost:7298/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+  const response = await axios.get(`https://satizen.somee.com/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
   console.log("Esto se ejecutó", response.data);
 };
 
@@ -103,7 +103,7 @@ const seleccionarUsuario = async (idUsuario) => {
 
 const fetchMensajesAntiguos = async (usuarioId2) => {
   try {
-    const response = await axios.get(`http://localhost:7298/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
+    const response = await axios.get(`https://satizen.somee.com/api/Mensajes/EntreUsuarios/${idAutor.value}/${usuarioId2}`);
     console.log("Mensajes antiguos:", response.data);
 
     listarMensajes.value = response.data.map((mensaje) => ({
@@ -168,7 +168,7 @@ const fetchMensajesAntiguos = async (usuarioId2) => {
 
         try {
           // Realiza la solicitud POST al endpoint especificado
-          const response = await axios.post('http://localhost:7298/api/Mensajes', mensaje, {
+          const response = await axios.post('https://satizen.somee.com/api/Mensajes', mensaje, {
             headers: { 'Content-Type': 'application/json' },
           });
 

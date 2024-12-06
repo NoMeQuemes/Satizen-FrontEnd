@@ -80,7 +80,7 @@ function listarLlamados() {
 async function getUpdatedToken() {
   try {
     // Realiza una solicitud de prueba para forzar la actualización del token si es necesario
-    await axiosFunction.get("Institucion/ListarInstituciones"); // Usa un endpoint existente
+    await axiosFunction.get("Llamado/ListarLlamados"); // Usa un endpoint existente
     return localStorage.getItem("token"); // Devuelve el token actualizado
   } catch (error) {
     console.error("Error al actualizar el token:", error);
@@ -91,7 +91,8 @@ async function getUpdatedToken() {
 async function initializeSignalR() {
   let token = await getUpdatedToken();
   const connection = new signalR.HubConnectionBuilder()
-    .withUrl('http://localhost:7298/alertaHub', {
+    // .withUrl('http://localhost:7298/alertaHub', {
+    .withUrl('https://satizen.somee.com/alertaHub', {
       accessTokenFactory: () => token
     }) // Aquí pones la URL del Hub en el backend
     // .withUrl('https://satizen.somee.com/alertaHub') // Aquí pones la URL del Hub en el backend
@@ -122,8 +123,8 @@ function asignarLlamado(id) {
 
 function getImageUrl(imageUrl) {
   // Si la URL es relativa, convierte a absoluta
-  return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
-  // return `https://www.satizen.somee.com/${imageUrl}`
+  // return `http://localhost:7298/${imageUrl}` // Ajusta esto según la base de tu API
+  return `https://www.satizen.somee.com/${imageUrl}`
 
 }
 
